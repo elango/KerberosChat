@@ -9,11 +9,15 @@
 /* Begin PBXBuildFile section */
 		E39E7F1F1B108CCD00EA1878 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = E39E7F1E1B108CCD00EA1878 /* main.m */; };
 		E39E7F221B108CCD00EA1878 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = E39E7F211B108CCD00EA1878 /* AppDelegate.m */; };
-		E39E7F251B108CCD00EA1878 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E39E7F241B108CCD00EA1878 /* ViewController.m */; };
+		E39E7F251B108CCD00EA1878 /* MainScreenViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E39E7F241B108CCD00EA1878 /* MainScreenViewController.m */; };
 		E39E7F281B108CCD00EA1878 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E39E7F261B108CCD00EA1878 /* Main.storyboard */; };
 		E39E7F2A1B108CCD00EA1878 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E39E7F291B108CCD00EA1878 /* Images.xcassets */; };
 		E39E7F2D1B108CCD00EA1878 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = E39E7F2B1B108CCD00EA1878 /* LaunchScreen.xib */; };
 		E39E7F391B108CCD00EA1878 /* KerbChatTests.m in Sources */ = {isa = PBXBuildFile; fileRef = E39E7F381B108CCD00EA1878 /* KerbChatTests.m */; };
+		E39E7F441B108E6A00EA1878 /* LoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E39E7F431B108E6A00EA1878 /* LoginViewController.m */; };
+		E39E7F4A1B108EC200EA1878 /* KerbChatManager.m in Sources */ = {isa = PBXBuildFile; fileRef = E39E7F491B108EC200EA1878 /* KerbChatManager.m */; };
+		E39E7F4C1B12374100EA1878 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E39E7F4B1B12374100EA1878 /* Security.framework */; };
+		E39E7F511B12385000EA1878 /* NSData+AES.m in Sources */ = {isa = PBXBuildFile; fileRef = E39E7F501B12385000EA1878 /* NSData+AES.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -32,14 +36,21 @@
 		E39E7F1E1B108CCD00EA1878 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		E39E7F201B108CCD00EA1878 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		E39E7F211B108CCD00EA1878 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
-		E39E7F231B108CCD00EA1878 /* ViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
-		E39E7F241B108CCD00EA1878 /* ViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ViewController.m; sourceTree = "<group>"; };
+		E39E7F231B108CCD00EA1878 /* MainScreenViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MainScreenViewController.h; sourceTree = "<group>"; };
+		E39E7F241B108CCD00EA1878 /* MainScreenViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MainScreenViewController.m; sourceTree = "<group>"; };
 		E39E7F271B108CCD00EA1878 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		E39E7F291B108CCD00EA1878 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		E39E7F2C1B108CCD00EA1878 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/LaunchScreen.xib; sourceTree = "<group>"; };
 		E39E7F321B108CCD00EA1878 /* KerbChatTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = KerbChatTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		E39E7F371B108CCD00EA1878 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		E39E7F381B108CCD00EA1878 /* KerbChatTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = KerbChatTests.m; sourceTree = "<group>"; };
+		E39E7F421B108E6A00EA1878 /* LoginViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LoginViewController.h; sourceTree = "<group>"; };
+		E39E7F431B108E6A00EA1878 /* LoginViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LoginViewController.m; sourceTree = "<group>"; };
+		E39E7F481B108EC200EA1878 /* KerbChatManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KerbChatManager.h; sourceTree = "<group>"; };
+		E39E7F491B108EC200EA1878 /* KerbChatManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KerbChatManager.m; sourceTree = "<group>"; };
+		E39E7F4B1B12374100EA1878 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
+		E39E7F4F1B12385000EA1878 /* NSData+AES.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSData+AES.h"; sourceTree = "<group>"; };
+		E39E7F501B12385000EA1878 /* NSData+AES.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSData+AES.m"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -47,6 +58,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E39E7F4C1B12374100EA1878 /* Security.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -63,6 +75,7 @@
 		E39E7F101B108CCD00EA1878 = {
 			isa = PBXGroup;
 			children = (
+				E39E7F4E1B1237C800EA1878 /* Frameworks */,
 				E39E7F1B1B108CCD00EA1878 /* KerbChat */,
 				E39E7F351B108CCD00EA1878 /* KerbChatTests */,
 				E39E7F1A1B108CCD00EA1878 /* Products */,
@@ -81,10 +94,13 @@
 		E39E7F1B1B108CCD00EA1878 /* KerbChat */ = {
 			isa = PBXGroup;
 			children = (
+				E39E7F4D1B1237A200EA1878 /* Security */,
+				E39E7F471B108E9300EA1878 /* Model */,
+				E39E7F451B108E6F00EA1878 /* ViewControllers */,
 				E39E7F201B108CCD00EA1878 /* AppDelegate.h */,
 				E39E7F211B108CCD00EA1878 /* AppDelegate.m */,
-				E39E7F231B108CCD00EA1878 /* ViewController.h */,
-				E39E7F241B108CCD00EA1878 /* ViewController.m */,
+				E39E7F231B108CCD00EA1878 /* MainScreenViewController.h */,
+				E39E7F241B108CCD00EA1878 /* MainScreenViewController.m */,
 				E39E7F261B108CCD00EA1878 /* Main.storyboard */,
 				E39E7F291B108CCD00EA1878 /* Images.xcassets */,
 				E39E7F2B1B108CCD00EA1878 /* LaunchScreen.xib */,
@@ -117,6 +133,49 @@
 				E39E7F371B108CCD00EA1878 /* Info.plist */,
 			);
 			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		E39E7F451B108E6F00EA1878 /* ViewControllers */ = {
+			isa = PBXGroup;
+			children = (
+				E39E7F461B108E7800EA1878 /* Login */,
+			);
+			name = ViewControllers;
+			sourceTree = "<group>";
+		};
+		E39E7F461B108E7800EA1878 /* Login */ = {
+			isa = PBXGroup;
+			children = (
+				E39E7F421B108E6A00EA1878 /* LoginViewController.h */,
+				E39E7F431B108E6A00EA1878 /* LoginViewController.m */,
+			);
+			name = Login;
+			sourceTree = "<group>";
+		};
+		E39E7F471B108E9300EA1878 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				E39E7F481B108EC200EA1878 /* KerbChatManager.h */,
+				E39E7F491B108EC200EA1878 /* KerbChatManager.m */,
+			);
+			name = Model;
+			sourceTree = "<group>";
+		};
+		E39E7F4D1B1237A200EA1878 /* Security */ = {
+			isa = PBXGroup;
+			children = (
+				E39E7F4F1B12385000EA1878 /* NSData+AES.h */,
+				E39E7F501B12385000EA1878 /* NSData+AES.m */,
+			);
+			name = Security;
+			sourceTree = "<group>";
+		};
+		E39E7F4E1B1237C800EA1878 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				E39E7F4B1B12374100EA1878 /* Security.framework */,
+			);
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -219,7 +278,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				E39E7F251B108CCD00EA1878 /* ViewController.m in Sources */,
+				E39E7F441B108E6A00EA1878 /* LoginViewController.m in Sources */,
+				E39E7F251B108CCD00EA1878 /* MainScreenViewController.m in Sources */,
+				E39E7F511B12385000EA1878 /* NSData+AES.m in Sources */,
+				E39E7F4A1B108EC200EA1878 /* KerbChatManager.m in Sources */,
 				E39E7F221B108CCD00EA1878 /* AppDelegate.m in Sources */,
 				E39E7F1F1B108CCD00EA1878 /* main.m in Sources */,
 			);

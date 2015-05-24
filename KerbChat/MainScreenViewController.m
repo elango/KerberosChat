@@ -6,17 +6,17 @@
 //  Copyright (c) 2015 Anton Rodick. All rights reserved.
 //
 
-#import "ViewController.h"
+#import "MainScreenViewController.h"
 
-@interface ViewController ()
+@interface MainScreenViewController ()
 
 @end
 
-@implementation ViewController
+@implementation MainScreenViewController
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    // Do any additional setup after loading the view, typically from a nib.
+    self.view.backgroundColor = [UIColor greenColor];
 }
 
 - (void)didReceiveMemoryWarning {

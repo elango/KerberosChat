@@ -7,6 +7,9 @@
 //
 
 #import "AppDelegate.h"
+#import "KerbChatManager.h"
+#import "LoginViewController.h"
+#import "MainScreenViewController.h"
 
 @interface AppDelegate ()
 
@@ -16,7 +19,17 @@
 
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
-    // Override point for customization after application launch.
+    NSString *identifier;
+    if(![[KerbChatManager sharedKerbChatManager] isLoggedIn]) {
+        identifier=@"loginScreen";
+    } else {
+        identifier=@"main";
+    }
+    UIStoryboard * storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+    UIViewController *screen = [storyboard instantiateViewControllerWithIdentifier:identifier];
+    [self.window setRootViewController:screen];
+    return YES;
+
     return YES;
 }
 

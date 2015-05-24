@@ -10,6 +10,7 @@
 #import "MainScreenViewController.h"
 #import "KerbChatManager.h"
 #import "NSData+AES.h"
+#import "BBAES.h"
 
 @interface LoginViewController ()
 
@@ -41,14 +42,20 @@
                                @"tgs", @"tgs_name",
                                @"2015-05-23 09:44:44", @"timestamp",
                                nil];
-    
     NSData *jsonToSend = [NSJSONSerialization dataWithJSONObject:jsonArray options:NSJSONWritingPrettyPrinted error:nil];
-    NSData *encryptedJson = [jsonToSend AES128EncryptedDataWithKey:self.passwordTextField.text];
-    NSString* params = [NSString stringWithFormat:@"login=%@&encrypted=%@", self.loginTextField.text, encryptedJson];
+    NSLog(@"json to send: %@", [[NSString alloc] initWithData:jsonToSend encoding:NSUTF8StringEncoding]);
+    NSString *encryptedJson = [BBAES encryptedStringFromData:jsonToSend IV:[BBAES randomIV] key:[self.passwordTextField.text dataUsingEncoding:NSUTF8StringEncoding] options:BBAESEncryptionOptionsIncludeIV];
+    NSLog(@"encJson: %s",[encryptedJson UTF8String]);
+    NSString* params = [NSString stringWithFormat:@"login=%@&encrypted=%s", self.loginTextField.text, [encryptedJson UTF8String]];
+//    NSString* plainString = @"hello world!1111";
+//    NSData *data = [NSData dataWithBytes:[plainString UTF8String] length:plainString.length];
+//    NSString *string = [BBAES encryptedStringFromData:data IV:[BBAES randomIV] key:[self.passwordTextField.text dataUsingEncoding:NSUTF8StringEncoding] options:BBAESEncryptionOptionsIncludeIV];
+//    NSLog(@"test string %@",string);
     NSURL* url = [NSURL URLWithString:[[KerbChatManager sharedKerbChatManager] loginUrlString]];
     NSMutableURLRequest* request = [NSMutableURLRequest requestWithURL:url];
     request.HTTPMethod = @"POST";
     request.HTTPBody = [params dataUsingEncoding:NSUTF8StringEncoding];
+    request.timeoutInterval = 10;
     NSURLResponse *response;
     NSError *error = nil;
     NSError *errorJson = nil;
@@ -59,10 +66,13 @@
         [self showAlert];
     } else {
         NSString *str = [[NSString alloc] initWithData:result encoding:NSUTF8StringEncoding];
-        NSLog(@"%@",str);
+        NSLog(@"responce string : %@",str);
+        //str = @"LSyU7aJ8aUwRtjMQf9Geh6p2dx1uav9ECUbXLDZu48I=";
         NSData *encodeData = [str dataUsingEncoding:NSUTF8StringEncoding];
         NSData *resultBase64Decoded = [[NSData alloc] initWithBase64EncodedData:encodeData options:0];
-        NSData *decryptedResult = [resultBase64Decoded AES128DecryptedDataWithKey:self.passwordTextField.text];
+        NSData *decryptedResult = [BBAES decryptedDataFromData:resultBase64Decoded IV:nil key:[self.passwordTextField.text dataUsingEncoding:NSUTF8StringEncoding]];
+        NSString *message = [[NSString alloc] initWithData:decryptedResult encoding:NSUTF8StringEncoding];
+        NSLog(@"Decrypted message: %@",message);
         if (!decryptedResult) {
             [self showAlert];
         } else {

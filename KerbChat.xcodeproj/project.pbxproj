@@ -18,6 +18,7 @@
 		E39E7F4A1B108EC200EA1878 /* KerbChatManager.m in Sources */ = {isa = PBXBuildFile; fileRef = E39E7F491B108EC200EA1878 /* KerbChatManager.m */; };
 		E39E7F4C1B12374100EA1878 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E39E7F4B1B12374100EA1878 /* Security.framework */; };
 		E39E7F511B12385000EA1878 /* NSData+AES.m in Sources */ = {isa = PBXBuildFile; fileRef = E39E7F501B12385000EA1878 /* NSData+AES.m */; };
+		E39E7F541B12744600EA1878 /* BBAES.m in Sources */ = {isa = PBXBuildFile; fileRef = E39E7F531B12744600EA1878 /* BBAES.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -51,6 +52,8 @@
 		E39E7F4B1B12374100EA1878 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
 		E39E7F4F1B12385000EA1878 /* NSData+AES.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSData+AES.h"; sourceTree = "<group>"; };
 		E39E7F501B12385000EA1878 /* NSData+AES.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSData+AES.m"; sourceTree = "<group>"; };
+		E39E7F521B12744600EA1878 /* BBAES.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BBAES.h; path = "../../../../Downloads/BBAES-master/BBAES/BBAES/Classes/BBAES.h"; sourceTree = "<group>"; };
+		E39E7F531B12744600EA1878 /* BBAES.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = BBAES.m; path = "../../../../Downloads/BBAES-master/BBAES/BBAES/Classes/BBAES.m"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -164,6 +167,8 @@
 		E39E7F4D1B1237A200EA1878 /* Security */ = {
 			isa = PBXGroup;
 			children = (
+				E39E7F521B12744600EA1878 /* BBAES.h */,
+				E39E7F531B12744600EA1878 /* BBAES.m */,
 				E39E7F4F1B12385000EA1878 /* NSData+AES.h */,
 				E39E7F501B12385000EA1878 /* NSData+AES.m */,
 			);
@@ -284,6 +289,7 @@
 				E39E7F4A1B108EC200EA1878 /* KerbChatManager.m in Sources */,
 				E39E7F221B108CCD00EA1878 /* AppDelegate.m in Sources */,
 				E39E7F1F1B108CCD00EA1878 /* main.m in Sources */,
+				E39E7F541B12744600EA1878 /* BBAES.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

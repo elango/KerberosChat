@@ -34,11 +34,17 @@
 - (NSData *)AES128Operation:(CCOperation)operation key:(NSString *)key iv:(NSString *)iv
 {
     char keyPtr[kCCKeySizeAES128 + 1];
-    bzero(keyPtr, sizeof(keyPtr));
+//    bzero(keyPtr, sizeof(keyPtr));
+    for (int i=0;i<sizeof(keyPtr);i++) {
+        keyPtr[i] = ' ';
+    }
     [key getCString:keyPtr maxLength:sizeof(keyPtr) encoding:NSUTF8StringEncoding];
     
     char ivPtr[kCCBlockSizeAES128 + 1];
-    bzero(ivPtr, sizeof(ivPtr));
+//    bzero(ivPtr, sizeof(ivPtr));
+    for (int i=0;i<sizeof(ivPtr);i++) {
+        ivPtr[i] = ' ';
+    }
     if (iv) {
         [iv getCString:ivPtr maxLength:sizeof(ivPtr) encoding:NSUTF8StringEncoding];
     }

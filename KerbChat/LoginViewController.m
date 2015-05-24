@@ -55,18 +55,33 @@
     NSData *result = [NSURLConnection sendSynchronousRequest:request
                                            returningResponse:&response
                                                        error:&error];
-    NSLog(@"result : %@", result);
-    NSData *resultBase64Decoded = [[NSData alloc] initWithBase64EncodedData:result options:0];
-    NSData *decryptedResult = [resultBase64Decoded AES128DecryptedDataWithKey:self.passwordTextField.text];
-    NSDictionary* responseDict = [NSJSONSerialization JSONObjectWithData:decryptedResult options:kNilOptions error:&errorJson];
-    NSLog(@"%@", responseDict);
-    [self successfulLogin];
+    if (error) {
+        [self showAlert];
+    } else {
+        NSString *str = [[NSString alloc] initWithData:result encoding:NSUTF8StringEncoding];
+        NSLog(@"%@",str);
+        NSData *encodeData = [str dataUsingEncoding:NSUTF8StringEncoding];
+        NSData *resultBase64Decoded = [[NSData alloc] initWithBase64EncodedData:encodeData options:0];
+        NSData *decryptedResult = [resultBase64Decoded AES128DecryptedDataWithKey:self.passwordTextField.text];
+        if (!decryptedResult) {
+            [self showAlert];
+        } else {
+            NSDictionary* responseDict = [NSJSONSerialization JSONObjectWithData:decryptedResult options:kNilOptions error:&errorJson];
+            NSLog(@"%@", responseDict);
+            [self successfulLogin];
+        }
+    }
 }
 
 -(void) successfulLogin {
     UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
     MainScreenViewController *viewController = (MainScreenViewController *)[storyboard instantiateViewControllerWithIdentifier:@"main"];
     [self presentViewController:viewController animated:YES completion:nil];
+}
+
+-(void) showAlert {
+    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Error" message:@"Something wrong!" delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil];
+    [alertView show];
 }
 
 @end

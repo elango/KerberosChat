@@ -8,7 +8,7 @@
 
 #import "KerbChatManager.h"
 
-const NSString *kLOGIN_URL_STRING = @"https://ancient-fortress-4575.herokuapp.com/as/login/";
+const NSString *kLOGIN_URL_STRING = @"https://ancient-fortress-4575.herokuapp.com/as/login";
 
 @interface KerbChatManager ()
 

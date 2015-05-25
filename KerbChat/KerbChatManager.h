@@ -20,7 +20,8 @@
 - (NSString*)tgsUrlString;
 
 - (NSString*)getCurrentDataString;
-- (NSString*) encryptJsonFromDictionary:(NSDictionary*) json WithKey:(NSData*) key;
+- (NSString*)encryptJsonFromDictionary:(NSDictionary*) json WithKey:(NSData*) key;
+- (NSData*)decryptJsonFromData:(NSData*) result WithKey:(NSData*) key;
 
 - (void)clearData;
 

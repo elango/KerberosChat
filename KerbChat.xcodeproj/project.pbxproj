@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		E354AEB41B13B8F0007A6642 /* AuthHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = E354AEB31B13B8F0007A6642 /* AuthHelper.m */; };
 		E39E7F1F1B108CCD00EA1878 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = E39E7F1E1B108CCD00EA1878 /* main.m */; };
 		E39E7F221B108CCD00EA1878 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = E39E7F211B108CCD00EA1878 /* AppDelegate.m */; };
 		E39E7F251B108CCD00EA1878 /* MainScreenViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E39E7F241B108CCD00EA1878 /* MainScreenViewController.m */; };
@@ -32,6 +33,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		E354AEB21B13B8F0007A6642 /* AuthHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AuthHelper.h; sourceTree = "<group>"; };
+		E354AEB31B13B8F0007A6642 /* AuthHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AuthHelper.m; sourceTree = "<group>"; };
 		E39E7F191B108CCD00EA1878 /* KerbChat.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = KerbChat.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		E39E7F1D1B108CCD00EA1878 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		E39E7F1E1B108CCD00EA1878 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
@@ -75,6 +78,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		E354AEB11B13B8D9007A6642 /* Helpers */ = {
+			isa = PBXGroup;
+			children = (
+				E354AEB21B13B8F0007A6642 /* AuthHelper.h */,
+				E354AEB31B13B8F0007A6642 /* AuthHelper.m */,
+			);
+			name = Helpers;
+			sourceTree = "<group>";
+		};
 		E39E7F101B108CCD00EA1878 = {
 			isa = PBXGroup;
 			children = (
@@ -97,6 +109,7 @@
 		E39E7F1B1B108CCD00EA1878 /* KerbChat */ = {
 			isa = PBXGroup;
 			children = (
+				E354AEB11B13B8D9007A6642 /* Helpers */,
 				E39E7F4D1B1237A200EA1878 /* Security */,
 				E39E7F471B108E9300EA1878 /* Model */,
 				E39E7F451B108E6F00EA1878 /* ViewControllers */,
@@ -284,6 +297,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				E39E7F441B108E6A00EA1878 /* LoginViewController.m in Sources */,
+				E354AEB41B13B8F0007A6642 /* AuthHelper.m in Sources */,
 				E39E7F251B108CCD00EA1878 /* MainScreenViewController.m in Sources */,
 				E39E7F511B12385000EA1878 /* NSData+AES.m in Sources */,
 				E39E7F4A1B108EC200EA1878 /* KerbChatManager.m in Sources */,
@@ -482,6 +496,7 @@
 				E39E7F3E1B108CCD00EA1878 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		E39E7F3F1B108CCD00EA1878 /* Build configuration list for PBXNativeTarget "KerbChatTests" */ = {
 			isa = XCConfigurationList;
@@ -490,6 +505,7 @@
 				E39E7F411B108CCD00EA1878 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

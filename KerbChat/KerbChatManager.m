@@ -10,7 +10,7 @@
 #import "BBAES.h"
 
 const NSString *kLOGIN_URL_STRING = @"https://ancient-fortress-4575.herokuapp.com/as/login";
-const NSString *kTGS_URL_STRING = @"https://ancient-fortress-4575.herokuapp.com/as/tgs";
+const NSString *kTGS_URL_STRING = @"https://ancient-fortress-4575.herokuapp.com/tgs";
 
 @interface KerbChatManager ()
 
@@ -39,7 +39,7 @@ const NSString *kTGS_URL_STRING = @"https://ancient-fortress-4575.herokuapp.com/
     return [kTGS_URL_STRING copy];
 }
 
-- (NSString*) encryptJsonFromDictionary:(NSDictionary*) json WithKey:(NSData*) key{
+- (NSString*)encryptJsonFromDictionary:(NSDictionary*) json WithKey:(NSData*) key{
     NSData *jsonToEncrypt = [NSJSONSerialization dataWithJSONObject:json
                                                             options:NSJSONWritingPrettyPrinted
                                                               error:nil];
@@ -48,6 +48,18 @@ const NSString *kTGS_URL_STRING = @"https://ancient-fortress-4575.herokuapp.com/
                                                          key:key
                                                      options:BBAESEncryptionOptionsIncludeIV];
     return encryptedJson;
+}
+
+- (NSData*)decryptJsonFromData:(NSData*) result WithKey:(NSData*) key{
+    NSString *str = [[NSString alloc] initWithData:result encoding:NSUTF8StringEncoding];
+    NSLog(@"responce string : %@",str);
+    NSData *encodeData = [str dataUsingEncoding:NSUTF8StringEncoding];
+    NSData *resultBase64Decoded = [[NSData alloc] initWithBase64EncodedData:encodeData
+                                                                    options:0];
+    NSData *decryptedResult = [BBAES decryptedDataFromData:resultBase64Decoded
+                                                        IV:nil
+                                                       key:key];
+    return decryptedResult;
 }
 
 - (NSString*) getCurrentDataString {

@@ -42,13 +42,7 @@
                                @"tgs", @"tgs_name",
                                @"2015-05-23 09:44:44", @"timestamp",
                                nil];
-    NSError *error = nil;
-    NSData *result = [self dataFromAuthentificationWithJSON:jsonDictionary Error:&error];
-    if (error) {
-        [self showAlert];
-    } else {
-        [self authentificationWithResultData:result];
-    }
+    [self authentificationWithJson:jsonDictionary];
 }
 
 - (void)successfulLogin {
@@ -57,9 +51,34 @@
     [self presentViewController:viewController animated:YES completion:nil];
 }
 
+#pragma mark Cryptography
+
+- (void)authentificationWithJson:(NSDictionary*) jsonDictionary {
+    NSError *error = nil;
+    NSData *result = [self dataFromAuthentificationWithJSON:jsonDictionary Error:&error];
+    if (error) {
+        [self showAlert];
+    } else {
+        NSError *errorJson = nil;
+        NSData *decryptedResult = [[KerbChatManager sharedKerbChatManager] decryptJsonFromData:result WithKey:[self.passwordTextField.text dataUsingEncoding:NSUTF8StringEncoding]];
+        if (!decryptedResult) {
+            [self showAlert];
+        } else {
+            NSDictionary* responseDict = [NSJSONSerialization JSONObjectWithData:decryptedResult
+                                                                         options:kNilOptions
+                                                                           error:&errorJson];
+            NSString *secretKeyString = [responseDict valueForKey:@"session_key"];
+            [self setSecretKeyByString:secretKeyString];
+            NSLog(@"%@", responseDict);
+            [self authorizationTGSWithTicket:[responseDict valueForKey:@"tgs_ticket"]];
+            [self successfulLogin];
+        }
+    }
+}
+
 - (NSData*)dataFromAuthentificationWithJSON:(NSDictionary*) jsonToSend Error:(NSError**) error{
     NSString *encryptedJson = [[KerbChatManager sharedKerbChatManager] encryptJsonFromDictionary:jsonToSend WithKey:[self.passwordTextField.text dataUsingEncoding:NSUTF8StringEncoding]];
-//    NSLog(@"encJson: %s",[encryptedJson UTF8String]);
+    //    NSLog(@"encJson: %s",[encryptedJson UTF8String]);
     NSString* params = [NSString stringWithFormat:@"login=%@&encrypted=%s", self.loginTextField.text, [encryptedJson UTF8String]];
     NSURL* url = [NSURL URLWithString:[[KerbChatManager sharedKerbChatManager] loginUrlString]];
     NSMutableURLRequest* request = [NSMutableURLRequest requestWithURL:url];
@@ -73,36 +92,12 @@
     return result;
 }
 
-- (void)authentificationWithResultData:(NSData*) result {
-    NSError *errorJson = nil;
-    NSString *str = [[NSString alloc] initWithData:result encoding:NSUTF8StringEncoding];
-    NSLog(@"responce string : %@",str);
-    NSData *encodeData = [str dataUsingEncoding:NSUTF8StringEncoding];
-    NSData *resultBase64Decoded = [[NSData alloc] initWithBase64EncodedData:encodeData
-                                                                    options:0];
-    NSData *decryptedResult = [BBAES decryptedDataFromData:resultBase64Decoded
-                                                        IV:nil
-                                                       key:[self.passwordTextField.text dataUsingEncoding:NSUTF8StringEncoding]];
-    if (!decryptedResult) {
-        [self showAlert];
-    } else {
-        NSDictionary* responseDict = [NSJSONSerialization JSONObjectWithData:decryptedResult
-                                                                     options:kNilOptions
-                                                                       error:&errorJson];
-        NSString *secretKeyString = [responseDict valueForKey:@"session_key"];
-        [self setSecretKeyByString:secretKeyString];
-        NSLog(@"%@", responseDict);
-        [self authorizationTGSWithTicket:[responseDict valueForKey:@"tgs_ticket"]];
-        [self successfulLogin];
-    }
-
-}
-
 - (void)authorizationTGSWithTicket:(NSString*)ticket {
-    NSDictionary *jsonArray = [NSDictionary dictionaryWithObjectsAndKeys:
-                               @"user_name", @"client",
-                               @"timestamp", @"2015-05-23 09:44:44",nil];
-    NSString *authenticator = [[KerbChatManager sharedKerbChatManager] encryptJsonFromDictionary:jsonArray WithKey:[[KerbChatManager sharedKerbChatManager] secretKey]];
+    NSDictionary *jsonDictionary = [NSDictionary dictionaryWithObjectsAndKeys:
+                               self.loginTextField.text, @"user_name",
+                               @"2015-05-26 09:44:44", @"timestamp",
+                               nil];
+    NSString *authenticator = [[KerbChatManager sharedKerbChatManager] encryptJsonFromDictionary:jsonDictionary WithKey:[[KerbChatManager sharedKerbChatManager] secretKey]];
     NSString* params = [NSString stringWithFormat:@"authenticator=%@&tgs_ticket=%@&service=%@",authenticator, ticket, @"chat"];
     NSURL* url = [NSURL URLWithString:[[KerbChatManager sharedKerbChatManager] tgsUrlString]];
     NSMutableURLRequest* request = [NSMutableURLRequest requestWithURL:url];
@@ -117,7 +112,12 @@
     if (error) {
         [self showAlert];
     } else {
-        //todo
+        NSError *errorJson = nil;
+        NSData *decryptedResult = [[KerbChatManager sharedKerbChatManager] decryptJsonFromData:result WithKey:[[KerbChatManager sharedKerbChatManager] secretKey]];
+        NSDictionary* responseDict = [NSJSONSerialization JSONObjectWithData:decryptedResult
+                                                                     options:kNilOptions
+                                                                       error:&errorJson];
+        NSLog(@"%@",responseDict);
     }
 
 }

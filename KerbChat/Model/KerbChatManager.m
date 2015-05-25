@@ -8,6 +8,7 @@
 
 #import "KerbChatManager.h"
 #import "BBAES.h"
+#import <CommonCrypto/CommonDigest.h>
 
 const NSString *kLOGIN_URL_STRING = @"https://ancient-fortress-4575.herokuapp.com/as/login";
 const NSString *kTGS_URL_STRING = @"https://ancient-fortress-4575.herokuapp.com/tgs";
@@ -68,5 +69,40 @@ const NSString *kTGS_URL_STRING = @"https://ancient-fortress-4575.herokuapp.com/
     NSString *stringFromDate = [formatter stringFromDate:[NSDate date]];
     return stringFromDate;
 }
+
+#pragma mark
+#pragma mark Hash
+
+- (NSString*)sha256HashForString:(NSString*)input {
+    const char* str = [input UTF8String];
+    unsigned char result[CC_SHA256_DIGEST_LENGTH];
+    CC_SHA256(str, (CC_LONG)strlen(str), result);
+    
+    NSMutableString *ret = [NSMutableString stringWithCapacity:CC_SHA256_DIGEST_LENGTH*2];
+    for(int i = 0; i<CC_SHA256_DIGEST_LENGTH; i++)
+    {
+        [ret appendFormat:@"%02x",result[i]];
+    }
+    return ret;
+}
+
+- (NSData*)sha256HashForData:(NSData*) data {
+    unsigned int outputLength = CC_SHA256_DIGEST_LENGTH;
+    unsigned char output[outputLength];
+    
+    CC_SHA256(data.bytes, (unsigned int) data.length, output);
+    return [NSMutableData dataWithBytes:output length:outputLength];
+}
+
+- (NSString*)hashForPasswordString:(NSString*)password {
+    NSString *halfSizeHash = [[self sha256HashForString:password] substringToIndex:16];
+    return halfSizeHash;
+}
+
+- (NSData*)hashForPasswordData:(NSData*)password {
+    NSData* halfSizeHash = [[self sha256HashForData:password] subdataWithRange:NSMakeRange(0, 16)];
+    return halfSizeHash;
+}
+
 
 @end

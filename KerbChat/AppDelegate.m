@@ -25,7 +25,7 @@
     } else {
         identifier=@"main";
     }
-    UIStoryboard * storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
     UIViewController *screen = [storyboard instantiateViewControllerWithIdentifier:identifier];
     [self.window setRootViewController:screen];
     return YES;

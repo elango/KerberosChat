@@ -23,6 +23,9 @@
 - (NSString*)encryptJsonFromDictionary:(NSDictionary*) json withKey:(NSData*) key;
 - (NSData*)decryptJsonFromData:(NSData*) result withKey:(NSData*) key;
 
+- (NSString*)hashForPasswordString:(NSString*)password;
+- (NSData*)hashForPasswordData:(NSData*)password;
+
 - (void)clearData;
 
 @end

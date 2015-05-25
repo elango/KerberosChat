@@ -11,8 +11,9 @@
 
 @interface AuthHelper ()
 
-@property (nonatomic,strong) NSString* login;
-@property (nonatomic,strong) NSString* password;
+@property (nonatomic,strong) NSString *login;
+@property (nonatomic,strong) NSString *password;
+@property (nonatomic,strong) NSData *passwordData;
 
 @end
 
@@ -28,8 +29,12 @@
 }
 
 - (void)connectToChatWithLogin:(NSString*) login password:(NSString*)password {
-    [self setLogin:login];
+    self.passwordData = [[KerbChatManager manager]
+                         hashForPasswordData:[password dataUsingEncoding:NSUTF8StringEncoding]];
+#warning uncomment for client 
+    //self.passwordData = [password dataUsingEncoding:NSUTF8StringEncoding];
     [self setPassword:password];
+    [self setLogin:login];
     NSDictionary *jsonDictionary = [NSDictionary dictionaryWithObjectsAndKeys:
                                     @"tgs", @"tgs_name",
                                     @"2015-05-23 09:44:44", @"timestamp",
@@ -50,7 +55,7 @@
         return;
     }
     NSData *decryptedResult = [[KerbChatManager manager] decryptJsonFromData:result
-                                                                         withKey:[self.password dataUsingEncoding:NSUTF8StringEncoding]];
+                                                                         withKey:self.passwordData];
     NSDictionary *responseDictionary = [self dictionaryFromDecryptedData:decryptedResult];
     if (responseDictionary) {
         [self setSecretKeyByString:[responseDictionary valueForKey:@"session_key"]];
@@ -58,10 +63,12 @@
     }
 }
 
-- (NSData*)encryptedDataFromAuthentificationServerWithJson:(NSDictionary*) jsonToSend error:(NSError**) error{
+- (NSData*)encryptedDataFromAuthentificationServerWithJson:(NSDictionary*) jsonToSend
+                                                     error:(NSError**) error {
     NSString *encryptedJson = [[KerbChatManager manager] encryptJsonFromDictionary:jsonToSend
-                                                                           withKey:[self.password dataUsingEncoding:NSUTF8StringEncoding]];
-    NSString* params = [NSString stringWithFormat:@"login=%@&encrypted=%s", self.login, [encryptedJson UTF8String]];
+                                                                           withKey:self.passwordData];
+    NSString* params = [NSString stringWithFormat:@"login=%@&encrypted=%s",
+                        self.login, [encryptedJson UTF8String]];
     NSURL* url = [NSURL URLWithString:[[KerbChatManager manager] loginUrlString]];
     NSMutableURLRequest* request = [NSMutableURLRequest requestWithURL:url];
     request.HTTPMethod = @"POST";
@@ -85,8 +92,9 @@
         [self showAlert];
         return;
     }
-    NSData *decryptedResult = [[KerbChatManager manager] decryptJsonFromData:result
-                                                                     withKey:[[KerbChatManager manager] secretKey]];
+    NSData *decryptedResult = [[KerbChatManager manager]
+                               decryptJsonFromData:result
+                               withKey:[[KerbChatManager manager] secretKey]];
     NSDictionary *responseDictionary = [self dictionaryFromDecryptedData:decryptedResult];
     if (responseDictionary) {
         [self setSecretKeyByString:[responseDictionary valueForKey:@"client_service_sk"]];
@@ -99,9 +107,11 @@
                                     self.login, @"user_name",
                                     @"2015-05-26 09:44:44", @"timestamp",
                                     nil];
-    NSString *authenticator = [[KerbChatManager manager] encryptJsonFromDictionary:jsonDictionary
-                                                                           withKey:[[KerbChatManager manager] secretKey]];
-    NSString* params = [NSString stringWithFormat:@"authenticator=%@&tgs_ticket=%@&service=%@",authenticator, ticket, @"chat"];
+    NSString *authenticator = [[KerbChatManager manager]
+                               encryptJsonFromDictionary:jsonDictionary
+                               withKey:[[KerbChatManager manager] secretKey]];
+    NSString* params = [NSString stringWithFormat:@"authenticator=%@&tgs_ticket=%@&service=%@",
+                        authenticator, ticket, @"chat"];
     NSURL* url = [NSURL URLWithString:[[KerbChatManager manager] tgsUrlString]];
     NSMutableURLRequest* request = [NSMutableURLRequest requestWithURL:url];
     request.HTTPMethod = @"POST";

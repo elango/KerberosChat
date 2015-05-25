@@ -14,14 +14,14 @@
 @property (nonatomic) BOOL isLoggedIn;
 @property (nonatomic, strong) NSData *secretKey;
 
-+ (KerbChatManager*)sharedKerbChatManager;
++ (KerbChatManager*)manager;
 
 - (NSString*)loginUrlString;
 - (NSString*)tgsUrlString;
 
 - (NSString*)getCurrentDataString;
-- (NSString*)encryptJsonFromDictionary:(NSDictionary*) json WithKey:(NSData*) key;
-- (NSData*)decryptJsonFromData:(NSData*) result WithKey:(NSData*) key;
+- (NSString*)encryptJsonFromDictionary:(NSDictionary*) json withKey:(NSData*) key;
+- (NSData*)decryptJsonFromData:(NSData*) result withKey:(NSData*) key;
 
 - (void)clearData;
 

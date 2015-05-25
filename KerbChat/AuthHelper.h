@@ -7,7 +7,12 @@
 //
 
 #import <Foundation/Foundation.h>
+#import <UIKit/UIKit.h>
 
 @interface AuthHelper : NSObject
+
++ (AuthHelper*)helper;
+
+- (void)connectToChatWithLogin:(NSString*) login password:(NSString*)password;
 
 @end

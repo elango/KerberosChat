@@ -18,7 +18,7 @@ const NSString *kTGS_URL_STRING = @"https://ancient-fortress-4575.herokuapp.com/
 
 @implementation KerbChatManager
 
-+ (KerbChatManager*)sharedKerbChatManager {
++ (KerbChatManager*)manager {
     static dispatch_once_t onceToken;
     static KerbChatManager *manager = nil;
     dispatch_once(&onceToken, ^{
@@ -39,7 +39,7 @@ const NSString *kTGS_URL_STRING = @"https://ancient-fortress-4575.herokuapp.com/
     return [kTGS_URL_STRING copy];
 }
 
-- (NSString*)encryptJsonFromDictionary:(NSDictionary*) json WithKey:(NSData*) key{
+- (NSString*)encryptJsonFromDictionary:(NSDictionary*) json withKey:(NSData*) key{
     NSData *jsonToEncrypt = [NSJSONSerialization dataWithJSONObject:json
                                                             options:NSJSONWritingPrettyPrinted
                                                               error:nil];
@@ -50,7 +50,7 @@ const NSString *kTGS_URL_STRING = @"https://ancient-fortress-4575.herokuapp.com/
     return encryptedJson;
 }
 
-- (NSData*)decryptJsonFromData:(NSData*) result WithKey:(NSData*) key{
+- (NSData*)decryptJsonFromData:(NSData*) result withKey:(NSData*) key{
     NSString *str = [[NSString alloc] initWithData:result encoding:NSUTF8StringEncoding];
     NSLog(@"responce string : %@",str);
     NSData *encodeData = [str dataUsingEncoding:NSUTF8StringEncoding];

@@ -20,7 +20,7 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     NSString *identifier;
-    if(![[KerbChatManager sharedKerbChatManager] isLoggedIn]) {
+    if(![[KerbChatManager manager] isLoggedIn]) {
         identifier=@"loginScreen";
     } else {
         identifier=@"main";

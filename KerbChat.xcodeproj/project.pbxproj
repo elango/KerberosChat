@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		E307FE501B13D7E9002862E7 /* SRWebSocket.m in Sources */ = {isa = PBXBuildFile; fileRef = E307FE4F1B13D7E9002862E7 /* SRWebSocket.m */; };
 		E354AEB41B13B8F0007A6642 /* AuthHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = E354AEB31B13B8F0007A6642 /* AuthHelper.m */; };
 		E354AEB71B13CCB7007A6642 /* BBAES.m in Sources */ = {isa = PBXBuildFile; fileRef = E354AEB61B13CCB7007A6642 /* BBAES.m */; };
 		E354AEBB1B13CD41007A6642 /* MainScreenViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E354AEBA1B13CD41007A6642 /* MainScreenViewController.m */; };
@@ -33,6 +34,9 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		E307FE4D1B13D7E9002862E7 /* SocketRocket-Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "SocketRocket-Prefix.pch"; sourceTree = "<group>"; };
+		E307FE4E1B13D7E9002862E7 /* SRWebSocket.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SRWebSocket.h; sourceTree = "<group>"; };
+		E307FE4F1B13D7E9002862E7 /* SRWebSocket.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SRWebSocket.m; sourceTree = "<group>"; };
 		E354AEB21B13B8F0007A6642 /* AuthHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AuthHelper.h; sourceTree = "<group>"; };
 		E354AEB31B13B8F0007A6642 /* AuthHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AuthHelper.m; sourceTree = "<group>"; };
 		E354AEB51B13CCB7007A6642 /* BBAES.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BBAES.h; sourceTree = "<group>"; };
@@ -78,6 +82,16 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		E307FE4C1B13D7E9002862E7 /* SocketRocket */ = {
+			isa = PBXGroup;
+			children = (
+				E307FE4D1B13D7E9002862E7 /* SocketRocket-Prefix.pch */,
+				E307FE4E1B13D7E9002862E7 /* SRWebSocket.h */,
+				E307FE4F1B13D7E9002862E7 /* SRWebSocket.m */,
+			);
+			path = SocketRocket;
+			sourceTree = "<group>";
+		};
 		E354AEB11B13B8D9007A6642 /* Helpers */ = {
 			isa = PBXGroup;
 			children = (
@@ -118,6 +132,7 @@
 		E39E7F1B1B108CCD00EA1878 /* KerbChat */ = {
 			isa = PBXGroup;
 			children = (
+				E307FE4C1B13D7E9002862E7 /* SocketRocket */,
 				E354AEB11B13B8D9007A6642 /* Helpers */,
 				E39E7F4D1B1237A200EA1878 /* Security */,
 				E39E7F471B108E9300EA1878 /* Model */,
@@ -310,6 +325,7 @@
 				E39E7F511B12385000EA1878 /* NSData+AES.m in Sources */,
 				E39E7F4A1B108EC200EA1878 /* KerbChatManager.m in Sources */,
 				E39E7F221B108CCD00EA1878 /* AppDelegate.m in Sources */,
+				E307FE501B13D7E9002862E7 /* SRWebSocket.m in Sources */,
 				E39E7F1F1B108CCD00EA1878 /* main.m in Sources */,
 				E354AEB71B13CCB7007A6642 /* BBAES.m in Sources */,
 			);

@@ -12,9 +12,16 @@
 @interface KerbChatManager : NSObject
 
 @property (nonatomic) BOOL isLoggedIn;
+@property (nonatomic, strong) NSData *secretKey;
 
-+(KerbChatManager*) sharedKerbChatManager;
--(void) clearData;
--(NSString*) loginUrlString;
++ (KerbChatManager*)sharedKerbChatManager;
+
+- (NSString*)loginUrlString;
+- (NSString*)tgsUrlString;
+
+- (NSString*)getCurrentDataString;
+- (NSString*) encryptJsonFromDictionary:(NSDictionary*) json WithKey:(NSData*) key;
+
+- (void)clearData;
 
 @end

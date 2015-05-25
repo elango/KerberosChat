@@ -27,7 +27,7 @@
     [self successfulLogin];
 }
 
--(void) touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event {
+- (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event {
     [self.loginTextField resignFirstResponder];
     [self.passwordTextField resignFirstResponder];
 }
@@ -37,60 +37,102 @@
     // Dispose of any resources that can be recreated.
 }
 
--(IBAction)login:(id)sender {
-    NSDictionary *jsonArray = [NSDictionary dictionaryWithObjectsAndKeys:
+- (IBAction)login:(id)sender {
+    NSDictionary *jsonDictionary = [NSDictionary dictionaryWithObjectsAndKeys:
                                @"tgs", @"tgs_name",
                                @"2015-05-23 09:44:44", @"timestamp",
                                nil];
-    NSData *jsonToSend = [NSJSONSerialization dataWithJSONObject:jsonArray options:NSJSONWritingPrettyPrinted error:nil];
-    NSLog(@"json to send: %@", [[NSString alloc] initWithData:jsonToSend encoding:NSUTF8StringEncoding]);
-    NSString *encryptedJson = [BBAES encryptedStringFromData:jsonToSend IV:[BBAES randomIV] key:[self.passwordTextField.text dataUsingEncoding:NSUTF8StringEncoding] options:BBAESEncryptionOptionsIncludeIV];
-    NSLog(@"encJson: %s",[encryptedJson UTF8String]);
+    NSError *error = nil;
+    NSData *result = [self dataFromAuthentificationWithJSON:jsonDictionary Error:&error];
+    if (error) {
+        [self showAlert];
+    } else {
+        [self authentificationWithResultData:result];
+    }
+}
+
+- (void)successfulLogin {
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+    MainScreenViewController *viewController = (MainScreenViewController *)[storyboard instantiateViewControllerWithIdentifier:@"main"];
+    [self presentViewController:viewController animated:YES completion:nil];
+}
+
+- (NSData*)dataFromAuthentificationWithJSON:(NSDictionary*) jsonToSend Error:(NSError**) error{
+    NSString *encryptedJson = [[KerbChatManager sharedKerbChatManager] encryptJsonFromDictionary:jsonToSend WithKey:[self.passwordTextField.text dataUsingEncoding:NSUTF8StringEncoding]];
+//    NSLog(@"encJson: %s",[encryptedJson UTF8String]);
     NSString* params = [NSString stringWithFormat:@"login=%@&encrypted=%s", self.loginTextField.text, [encryptedJson UTF8String]];
-//    NSString* plainString = @"hello world!1111";
-//    NSData *data = [NSData dataWithBytes:[plainString UTF8String] length:plainString.length];
-//    NSString *string = [BBAES encryptedStringFromData:data IV:[BBAES randomIV] key:[self.passwordTextField.text dataUsingEncoding:NSUTF8StringEncoding] options:BBAESEncryptionOptionsIncludeIV];
-//    NSLog(@"test string %@",string);
     NSURL* url = [NSURL URLWithString:[[KerbChatManager sharedKerbChatManager] loginUrlString]];
     NSMutableURLRequest* request = [NSMutableURLRequest requestWithURL:url];
     request.HTTPMethod = @"POST";
     request.HTTPBody = [params dataUsingEncoding:NSUTF8StringEncoding];
     request.timeoutInterval = 10;
     NSURLResponse *response;
-    NSError *error = nil;
+    NSData *result = [NSURLConnection sendSynchronousRequest:request
+                                           returningResponse:&response
+                                                       error:error];
+    return result;
+}
+
+- (void)authentificationWithResultData:(NSData*) result {
     NSError *errorJson = nil;
+    NSString *str = [[NSString alloc] initWithData:result encoding:NSUTF8StringEncoding];
+    NSLog(@"responce string : %@",str);
+    NSData *encodeData = [str dataUsingEncoding:NSUTF8StringEncoding];
+    NSData *resultBase64Decoded = [[NSData alloc] initWithBase64EncodedData:encodeData
+                                                                    options:0];
+    NSData *decryptedResult = [BBAES decryptedDataFromData:resultBase64Decoded
+                                                        IV:nil
+                                                       key:[self.passwordTextField.text dataUsingEncoding:NSUTF8StringEncoding]];
+    if (!decryptedResult) {
+        [self showAlert];
+    } else {
+        NSDictionary* responseDict = [NSJSONSerialization JSONObjectWithData:decryptedResult
+                                                                     options:kNilOptions
+                                                                       error:&errorJson];
+        NSString *secretKeyString = [responseDict valueForKey:@"session_key"];
+        [self setSecretKeyByString:secretKeyString];
+        NSLog(@"%@", responseDict);
+        [self authorizationTGSWithTicket:[responseDict valueForKey:@"tgs_ticket"]];
+        [self successfulLogin];
+    }
+
+}
+
+- (void)authorizationTGSWithTicket:(NSString*)ticket {
+    NSDictionary *jsonArray = [NSDictionary dictionaryWithObjectsAndKeys:
+                               @"user_name", @"client",
+                               @"timestamp", @"2015-05-23 09:44:44",nil];
+    NSString *authenticator = [[KerbChatManager sharedKerbChatManager] encryptJsonFromDictionary:jsonArray WithKey:[[KerbChatManager sharedKerbChatManager] secretKey]];
+    NSString* params = [NSString stringWithFormat:@"authenticator=%@&tgs_ticket=%@&service=%@",authenticator, ticket, @"chat"];
+    NSURL* url = [NSURL URLWithString:[[KerbChatManager sharedKerbChatManager] tgsUrlString]];
+    NSMutableURLRequest* request = [NSMutableURLRequest requestWithURL:url];
+    request.HTTPMethod = @"POST";
+    request.HTTPBody = [params dataUsingEncoding:NSUTF8StringEncoding];
+    request.timeoutInterval = 10;
+    NSURLResponse *response;
+    NSError *error = nil;
     NSData *result = [NSURLConnection sendSynchronousRequest:request
                                            returningResponse:&response
                                                        error:&error];
     if (error) {
         [self showAlert];
     } else {
-        NSString *str = [[NSString alloc] initWithData:result encoding:NSUTF8StringEncoding];
-        NSLog(@"responce string : %@",str);
-        //str = @"LSyU7aJ8aUwRtjMQf9Geh6p2dx1uav9ECUbXLDZu48I=";
-        NSData *encodeData = [str dataUsingEncoding:NSUTF8StringEncoding];
-        NSData *resultBase64Decoded = [[NSData alloc] initWithBase64EncodedData:encodeData options:0];
-        NSData *decryptedResult = [BBAES decryptedDataFromData:resultBase64Decoded IV:nil key:[self.passwordTextField.text dataUsingEncoding:NSUTF8StringEncoding]];
-        NSString *message = [[NSString alloc] initWithData:decryptedResult encoding:NSUTF8StringEncoding];
-        NSLog(@"Decrypted message: %@",message);
-        if (!decryptedResult) {
-            [self showAlert];
-        } else {
-            NSDictionary* responseDict = [NSJSONSerialization JSONObjectWithData:decryptedResult options:kNilOptions error:&errorJson];
-            NSLog(@"%@", responseDict);
-            [self successfulLogin];
-        }
+        //todo
     }
+
 }
 
--(void) successfulLogin {
-    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
-    MainScreenViewController *viewController = (MainScreenViewController *)[storyboard instantiateViewControllerWithIdentifier:@"main"];
-    [self presentViewController:viewController animated:YES completion:nil];
+- (void) setSecretKeyByString:(NSString*) string {
+    NSData *decodedData = [[NSData alloc] initWithBase64EncodedString:string options:0];
+    [[KerbChatManager sharedKerbChatManager] setSecretKey:decodedData];
 }
 
--(void) showAlert {
-    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Error" message:@"Something wrong!" delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil];
+- (void)showAlert {
+    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Error"
+                                                        message:@"Something wrong!"
+                                                       delegate:self
+                                              cancelButtonTitle:@"Ok"
+                                              otherButtonTitles:nil];
     [alertView show];
 }
 

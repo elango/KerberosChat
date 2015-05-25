@@ -47,19 +47,14 @@
                                                                      error:&error];
     if (error) {
         [self showAlert];
-    } else {
-        NSData *decryptedResult = [[KerbChatManager manager] decryptJsonFromData:result
+        return;
+    }
+    NSData *decryptedResult = [[KerbChatManager manager] decryptJsonFromData:result
                                                                          withKey:[self.password dataUsingEncoding:NSUTF8StringEncoding]];
-        if (!decryptedResult) {
-            [self showAlert];
-        } else {
-            NSError *errorJson = nil;
-            NSDictionary* responseDictionary = [NSJSONSerialization JSONObjectWithData:decryptedResult
-                                                                         options:kNilOptions
-                                                                           error:&errorJson];
-            [self setSecretKeyByString:[responseDictionary valueForKey:@"session_key"]];
-            [self authorizateTgsWithTicket:[responseDictionary valueForKey:@"tgs_ticket"]];
-        }
+    NSDictionary *responseDictionary = [self dictionaryFromDecryptedData:decryptedResult];
+    if (responseDictionary) {
+        [self setSecretKeyByString:[responseDictionary valueForKey:@"session_key"]];
+        [self authorizateTgsWithTicket:[responseDictionary valueForKey:@"tgs_ticket"]];
     }
 }
 
@@ -88,17 +83,14 @@
                                                     error:&error];
     if (error) {
         [self showAlert];
-    } else {
-        NSError *errorJson = nil;
-        NSData *decryptedResult = [[KerbChatManager manager] decryptJsonFromData:result
-                                                                         withKey:[[KerbChatManager manager] secretKey]];
-        NSDictionary* responseDictionary = [NSJSONSerialization JSONObjectWithData:decryptedResult
-                                                                     options:kNilOptions
-                                                                       error:&errorJson];
-        [self setSecretKeyByString:[responseDictionary valueForKey:@"session_key"]];
-        NSLog(@"%@",responseDictionary);
+        return;
     }
-    
+    NSData *decryptedResult = [[KerbChatManager manager] decryptJsonFromData:result
+                                                                     withKey:[[KerbChatManager manager] secretKey]];
+    NSDictionary *responseDictionary = [self dictionaryFromDecryptedData:decryptedResult];
+    if (responseDictionary) {
+        [self setSecretKeyByString:[responseDictionary valueForKey:@"session_key"]];
+    }
 }
 
 - (NSData*)encryptedDataFromTgsWithTicket:(NSString*) ticket error:(NSError**) error{
@@ -123,6 +115,19 @@
 
 #pragma mark 
 #pragma mark
+
+- (NSDictionary*) dictionaryFromDecryptedData:(NSData*) decryptedResult {
+    if (!decryptedResult) {
+        [self showAlert];
+        return nil;
+    }
+    NSError *errorJson = nil;
+    NSDictionary* responseDictionary = [NSJSONSerialization JSONObjectWithData:decryptedResult
+                                                                       options:kNilOptions
+                                                                         error:&errorJson];
+    NSLog(@"%@",responseDictionary);
+    return responseDictionary;
+}
 
 - (void) setSecretKeyByString:(NSString*) string {
     NSData *decodedData = [[NSData alloc] initWithBase64EncodedString:string options:0];

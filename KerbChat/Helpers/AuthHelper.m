@@ -89,8 +89,9 @@
                                                                      withKey:[[KerbChatManager manager] secretKey]];
     NSDictionary *responseDictionary = [self dictionaryFromDecryptedData:decryptedResult];
     if (responseDictionary) {
-        [self setSecretKeyByString:[responseDictionary valueForKey:@"session_key"]];
+        [self setSecretKeyByString:[responseDictionary valueForKey:@"client_service_sk"]];
     }
+    NSLog(@"Done!");
 }
 
 - (NSData*)encryptedDataFromTgsWithTicket:(NSString*) ticket error:(NSError**) error{

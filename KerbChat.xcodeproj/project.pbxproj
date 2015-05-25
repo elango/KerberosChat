@@ -8,9 +8,10 @@
 
 /* Begin PBXBuildFile section */
 		E354AEB41B13B8F0007A6642 /* AuthHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = E354AEB31B13B8F0007A6642 /* AuthHelper.m */; };
+		E354AEB71B13CCB7007A6642 /* BBAES.m in Sources */ = {isa = PBXBuildFile; fileRef = E354AEB61B13CCB7007A6642 /* BBAES.m */; };
+		E354AEBB1B13CD41007A6642 /* MainScreenViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E354AEBA1B13CD41007A6642 /* MainScreenViewController.m */; };
 		E39E7F1F1B108CCD00EA1878 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = E39E7F1E1B108CCD00EA1878 /* main.m */; };
 		E39E7F221B108CCD00EA1878 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = E39E7F211B108CCD00EA1878 /* AppDelegate.m */; };
-		E39E7F251B108CCD00EA1878 /* MainScreenViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E39E7F241B108CCD00EA1878 /* MainScreenViewController.m */; };
 		E39E7F281B108CCD00EA1878 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E39E7F261B108CCD00EA1878 /* Main.storyboard */; };
 		E39E7F2A1B108CCD00EA1878 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E39E7F291B108CCD00EA1878 /* Images.xcassets */; };
 		E39E7F2D1B108CCD00EA1878 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = E39E7F2B1B108CCD00EA1878 /* LaunchScreen.xib */; };
@@ -19,7 +20,6 @@
 		E39E7F4A1B108EC200EA1878 /* KerbChatManager.m in Sources */ = {isa = PBXBuildFile; fileRef = E39E7F491B108EC200EA1878 /* KerbChatManager.m */; };
 		E39E7F4C1B12374100EA1878 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E39E7F4B1B12374100EA1878 /* Security.framework */; };
 		E39E7F511B12385000EA1878 /* NSData+AES.m in Sources */ = {isa = PBXBuildFile; fileRef = E39E7F501B12385000EA1878 /* NSData+AES.m */; };
-		E39E7F541B12744600EA1878 /* BBAES.m in Sources */ = {isa = PBXBuildFile; fileRef = E39E7F531B12744600EA1878 /* BBAES.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -35,13 +35,15 @@
 /* Begin PBXFileReference section */
 		E354AEB21B13B8F0007A6642 /* AuthHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AuthHelper.h; sourceTree = "<group>"; };
 		E354AEB31B13B8F0007A6642 /* AuthHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AuthHelper.m; sourceTree = "<group>"; };
+		E354AEB51B13CCB7007A6642 /* BBAES.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BBAES.h; sourceTree = "<group>"; };
+		E354AEB61B13CCB7007A6642 /* BBAES.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BBAES.m; sourceTree = "<group>"; };
+		E354AEB91B13CD41007A6642 /* MainScreenViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MainScreenViewController.h; sourceTree = "<group>"; };
+		E354AEBA1B13CD41007A6642 /* MainScreenViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MainScreenViewController.m; sourceTree = "<group>"; };
 		E39E7F191B108CCD00EA1878 /* KerbChat.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = KerbChat.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		E39E7F1D1B108CCD00EA1878 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		E39E7F1E1B108CCD00EA1878 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		E39E7F201B108CCD00EA1878 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		E39E7F211B108CCD00EA1878 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
-		E39E7F231B108CCD00EA1878 /* MainScreenViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MainScreenViewController.h; sourceTree = "<group>"; };
-		E39E7F241B108CCD00EA1878 /* MainScreenViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MainScreenViewController.m; sourceTree = "<group>"; };
 		E39E7F271B108CCD00EA1878 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		E39E7F291B108CCD00EA1878 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		E39E7F2C1B108CCD00EA1878 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/LaunchScreen.xib; sourceTree = "<group>"; };
@@ -55,8 +57,6 @@
 		E39E7F4B1B12374100EA1878 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
 		E39E7F4F1B12385000EA1878 /* NSData+AES.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSData+AES.h"; sourceTree = "<group>"; };
 		E39E7F501B12385000EA1878 /* NSData+AES.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSData+AES.m"; sourceTree = "<group>"; };
-		E39E7F521B12744600EA1878 /* BBAES.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BBAES.h; path = "../../../../Downloads/BBAES-master/BBAES/BBAES/Classes/BBAES.h"; sourceTree = "<group>"; };
-		E39E7F531B12744600EA1878 /* BBAES.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = BBAES.m; path = "../../../../Downloads/BBAES-master/BBAES/BBAES/Classes/BBAES.m"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -84,7 +84,16 @@
 				E354AEB21B13B8F0007A6642 /* AuthHelper.h */,
 				E354AEB31B13B8F0007A6642 /* AuthHelper.m */,
 			);
-			name = Helpers;
+			path = Helpers;
+			sourceTree = "<group>";
+		};
+		E354AEB81B13CD41007A6642 /* MainScreenViewController */ = {
+			isa = PBXGroup;
+			children = (
+				E354AEB91B13CD41007A6642 /* MainScreenViewController.h */,
+				E354AEBA1B13CD41007A6642 /* MainScreenViewController.m */,
+			);
+			path = MainScreenViewController;
 			sourceTree = "<group>";
 		};
 		E39E7F101B108CCD00EA1878 = {
@@ -115,8 +124,6 @@
 				E39E7F451B108E6F00EA1878 /* ViewControllers */,
 				E39E7F201B108CCD00EA1878 /* AppDelegate.h */,
 				E39E7F211B108CCD00EA1878 /* AppDelegate.m */,
-				E39E7F231B108CCD00EA1878 /* MainScreenViewController.h */,
-				E39E7F241B108CCD00EA1878 /* MainScreenViewController.m */,
 				E39E7F261B108CCD00EA1878 /* Main.storyboard */,
 				E39E7F291B108CCD00EA1878 /* Images.xcassets */,
 				E39E7F2B1B108CCD00EA1878 /* LaunchScreen.xib */,
@@ -154,9 +161,10 @@
 		E39E7F451B108E6F00EA1878 /* ViewControllers */ = {
 			isa = PBXGroup;
 			children = (
+				E354AEB81B13CD41007A6642 /* MainScreenViewController */,
 				E39E7F461B108E7800EA1878 /* Login */,
 			);
-			name = ViewControllers;
+			path = ViewControllers;
 			sourceTree = "<group>";
 		};
 		E39E7F461B108E7800EA1878 /* Login */ = {
@@ -165,7 +173,7 @@
 				E39E7F421B108E6A00EA1878 /* LoginViewController.h */,
 				E39E7F431B108E6A00EA1878 /* LoginViewController.m */,
 			);
-			name = Login;
+			path = Login;
 			sourceTree = "<group>";
 		};
 		E39E7F471B108E9300EA1878 /* Model */ = {
@@ -174,18 +182,18 @@
 				E39E7F481B108EC200EA1878 /* KerbChatManager.h */,
 				E39E7F491B108EC200EA1878 /* KerbChatManager.m */,
 			);
-			name = Model;
+			path = Model;
 			sourceTree = "<group>";
 		};
 		E39E7F4D1B1237A200EA1878 /* Security */ = {
 			isa = PBXGroup;
 			children = (
-				E39E7F521B12744600EA1878 /* BBAES.h */,
-				E39E7F531B12744600EA1878 /* BBAES.m */,
+				E354AEB51B13CCB7007A6642 /* BBAES.h */,
+				E354AEB61B13CCB7007A6642 /* BBAES.m */,
 				E39E7F4F1B12385000EA1878 /* NSData+AES.h */,
 				E39E7F501B12385000EA1878 /* NSData+AES.m */,
 			);
-			name = Security;
+			path = Security;
 			sourceTree = "<group>";
 		};
 		E39E7F4E1B1237C800EA1878 /* Frameworks */ = {
@@ -297,13 +305,13 @@
 			buildActionMask = 2147483647;
 			files = (
 				E39E7F441B108E6A00EA1878 /* LoginViewController.m in Sources */,
+				E354AEBB1B13CD41007A6642 /* MainScreenViewController.m in Sources */,
 				E354AEB41B13B8F0007A6642 /* AuthHelper.m in Sources */,
-				E39E7F251B108CCD00EA1878 /* MainScreenViewController.m in Sources */,
 				E39E7F511B12385000EA1878 /* NSData+AES.m in Sources */,
 				E39E7F4A1B108EC200EA1878 /* KerbChatManager.m in Sources */,
 				E39E7F221B108CCD00EA1878 /* AppDelegate.m in Sources */,
 				E39E7F1F1B108CCD00EA1878 /* main.m in Sources */,
-				E39E7F541B12744600EA1878 /* BBAES.m in Sources */,
+				E354AEB71B13CCB7007A6642 /* BBAES.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

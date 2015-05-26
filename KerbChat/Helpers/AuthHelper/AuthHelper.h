@@ -11,8 +11,12 @@
 
 @interface AuthHelper : NSObject
 
-+ (AuthHelper*)helper;
+@property (nonatomic,readonly) BOOL isOk;
+@property (nonatomic,readonly) NSString* login;
+@property (nonatomic,readonly) NSString* password;
+@property (nonatomic,readonly) NSData* ticket;
 
++ (AuthHelper*)helper;
 - (void)connectToChatWithLogin:(NSString*) login password:(NSString*)password;
 
 @end

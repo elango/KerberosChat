@@ -9,6 +9,8 @@
 /* Begin PBXBuildFile section */
 		E307FE501B13D7E9002862E7 /* SRWebSocket.m in Sources */ = {isa = PBXBuildFile; fileRef = E307FE4F1B13D7E9002862E7 /* SRWebSocket.m */; };
 		E307FE521B13DD48002862E7 /* libicucore.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = E307FE511B13DD48002862E7 /* libicucore.dylib */; };
+		E307FE571B13F56D002862E7 /* ChatHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = E307FE561B13F56D002862E7 /* ChatHelper.m */; };
+		E307FE5A1B13F854002862E7 /* TCMessage.m in Sources */ = {isa = PBXBuildFile; fileRef = E307FE591B13F854002862E7 /* TCMessage.m */; };
 		E354AEB41B13B8F0007A6642 /* AuthHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = E354AEB31B13B8F0007A6642 /* AuthHelper.m */; };
 		E354AEB71B13CCB7007A6642 /* BBAES.m in Sources */ = {isa = PBXBuildFile; fileRef = E354AEB61B13CCB7007A6642 /* BBAES.m */; };
 		E354AEBB1B13CD41007A6642 /* MainScreenViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E354AEBA1B13CD41007A6642 /* MainScreenViewController.m */; };
@@ -39,6 +41,10 @@
 		E307FE4E1B13D7E9002862E7 /* SRWebSocket.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SRWebSocket.h; sourceTree = "<group>"; };
 		E307FE4F1B13D7E9002862E7 /* SRWebSocket.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SRWebSocket.m; sourceTree = "<group>"; };
 		E307FE511B13DD48002862E7 /* libicucore.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libicucore.dylib; path = usr/lib/libicucore.dylib; sourceTree = SDKROOT; };
+		E307FE551B13F56D002862E7 /* ChatHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ChatHelper.h; sourceTree = "<group>"; };
+		E307FE561B13F56D002862E7 /* ChatHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ChatHelper.m; sourceTree = "<group>"; };
+		E307FE581B13F854002862E7 /* TCMessage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TCMessage.h; sourceTree = "<group>"; };
+		E307FE591B13F854002862E7 /* TCMessage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TCMessage.m; sourceTree = "<group>"; };
 		E354AEB21B13B8F0007A6642 /* AuthHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AuthHelper.h; sourceTree = "<group>"; };
 		E354AEB31B13B8F0007A6642 /* AuthHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AuthHelper.m; sourceTree = "<group>"; };
 		E354AEB51B13CCB7007A6642 /* BBAES.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BBAES.h; sourceTree = "<group>"; };
@@ -91,15 +97,35 @@
 				E307FE4D1B13D7E9002862E7 /* SocketRocket-Prefix.pch */,
 				E307FE4E1B13D7E9002862E7 /* SRWebSocket.h */,
 				E307FE4F1B13D7E9002862E7 /* SRWebSocket.m */,
+				E307FE581B13F854002862E7 /* TCMessage.h */,
+				E307FE591B13F854002862E7 /* TCMessage.m */,
 			);
 			path = SocketRocket;
+			sourceTree = "<group>";
+		};
+		E307FE531B13F516002862E7 /* AuthHelper */ = {
+			isa = PBXGroup;
+			children = (
+				E354AEB21B13B8F0007A6642 /* AuthHelper.h */,
+				E354AEB31B13B8F0007A6642 /* AuthHelper.m */,
+			);
+			path = AuthHelper;
+			sourceTree = "<group>";
+		};
+		E307FE541B13F561002862E7 /* ChatHelper */ = {
+			isa = PBXGroup;
+			children = (
+				E307FE551B13F56D002862E7 /* ChatHelper.h */,
+				E307FE561B13F56D002862E7 /* ChatHelper.m */,
+			);
+			path = ChatHelper;
 			sourceTree = "<group>";
 		};
 		E354AEB11B13B8D9007A6642 /* Helpers */ = {
 			isa = PBXGroup;
 			children = (
-				E354AEB21B13B8F0007A6642 /* AuthHelper.h */,
-				E354AEB31B13B8F0007A6642 /* AuthHelper.m */,
+				E307FE541B13F561002862E7 /* ChatHelper */,
+				E307FE531B13F516002862E7 /* AuthHelper */,
 			);
 			path = Helpers;
 			sourceTree = "<group>";
@@ -329,9 +355,11 @@
 				E39E7F511B12385000EA1878 /* NSData+AES.m in Sources */,
 				E39E7F4A1B108EC200EA1878 /* KerbChatManager.m in Sources */,
 				E39E7F221B108CCD00EA1878 /* AppDelegate.m in Sources */,
+				E307FE5A1B13F854002862E7 /* TCMessage.m in Sources */,
 				E307FE501B13D7E9002862E7 /* SRWebSocket.m in Sources */,
 				E39E7F1F1B108CCD00EA1878 /* main.m in Sources */,
 				E354AEB71B13CCB7007A6642 /* BBAES.m in Sources */,
+				E307FE571B13F56D002862E7 /* ChatHelper.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

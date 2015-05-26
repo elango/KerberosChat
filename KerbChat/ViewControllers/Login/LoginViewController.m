@@ -37,6 +37,9 @@
 
 - (IBAction)login:(id)sender {
     [[AuthHelper helper] connectToChatWithLogin:self.loginTextField.text password:self.passwordTextField.text];
+    if ([[AuthHelper helper] isOk]) {
+        [self successfulLogin];
+    }
 }
 
 - (void)successfulLogin {

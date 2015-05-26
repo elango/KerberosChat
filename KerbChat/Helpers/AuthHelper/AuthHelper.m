@@ -14,6 +14,8 @@
 @property (nonatomic,strong) NSString *login;
 @property (nonatomic,strong) NSString *password;
 @property (nonatomic,strong) NSData *passwordData;
+@property (nonatomic) BOOL isOk;
+@property (nonatomic,strong) NSData *ticket;
 
 @end
 
@@ -29,10 +31,10 @@
 }
 
 - (void)connectToChatWithLogin:(NSString*) login password:(NSString*)password {
-    self.passwordData = [[KerbChatManager manager]
-                         hashForPasswordData:[password dataUsingEncoding:NSUTF8StringEncoding]];
-#warning uncomment for client 
-    //self.passwordData = [password dataUsingEncoding:NSUTF8StringEncoding];
+#warning uncomment for hash
+//    self.passwordData = [[KerbChatManager manager]
+//                         hashForPasswordData:[password dataUsingEncoding:NSUTF8StringEncoding]];
+    self.passwordData = [password dataUsingEncoding:NSUTF8StringEncoding];
     [self setPassword:password];
     [self setLogin:login];
     NSDictionary *jsonDictionary = [NSDictionary dictionaryWithObjectsAndKeys:
@@ -98,8 +100,10 @@
     NSDictionary *responseDictionary = [self dictionaryFromDecryptedData:decryptedResult];
     if (responseDictionary) {
         [self setSecretKeyByString:[responseDictionary valueForKey:@"client_service_sk"]];
+        self.ticket = [responseDictionary valueForKey:@"service_ticket"];
+        self.isOk = YES;
+        NSLog(@"Done!");
     }
-    NSLog(@"Done!");
 }
 
 - (NSData*)encryptedDataFromTgsWithTicket:(NSString*) ticket error:(NSError**) error{

@@ -39,7 +39,7 @@
     [self setLogin:login];
     NSDictionary *jsonDictionary = [NSDictionary dictionaryWithObjectsAndKeys:
                                     @"tgs", @"tgs_name",
-                                    @"2015-05-23 09:44:44", @"timestamp",
+                                    @"2015-07-23 09:44:44", @"timestamp",
                                     nil];
     [self authentificateWithJson:jsonDictionary];
     
@@ -53,7 +53,7 @@
     NSData *result = [self encryptedDataFromAuthentificationServerWithJson:jsonDictionary
                                                                      error:&error];
     if (error) {
-        [self showAlert];
+        [self showAlertWithMessage:@"Error in authentificateWithJson"];
         return;
     }
     NSData *decryptedResult = [[KerbChatManager manager] decryptJsonFromData:result
@@ -91,7 +91,7 @@
     NSData *result = [self encryptedDataFromTgsWithTicket:ticket
                                                     error:&error];
     if (error) {
-        [self showAlert];
+        [self showAlertWithMessage:@"Error in authorizateTgsWithTicket"];
         return;
     }
     NSData *decryptedResult = [[KerbChatManager manager]
@@ -109,7 +109,7 @@
 - (NSData*)encryptedDataFromTgsWithTicket:(NSString*) ticket error:(NSError**) error{
     NSDictionary *jsonDictionary = [NSDictionary dictionaryWithObjectsAndKeys:
                                     self.login, @"user_name",
-                                    @"2015-05-26 09:44:44", @"timestamp",
+                                    @"2015-07-23 09:44:44", @"timestamp",
                                     nil];
     NSString *authenticator = [[KerbChatManager manager]
                                encryptJsonFromDictionary:jsonDictionary
@@ -133,7 +133,7 @@
 
 - (NSDictionary*) dictionaryFromDecryptedData:(NSData*) decryptedResult {
     if (!decryptedResult) {
-        [self showAlert];
+        [self showAlertWithMessage:@"Error in dictionaryFromDecryptedData"];
         return nil;
     }
     NSError *errorJson = nil;
@@ -149,9 +149,9 @@
     [[KerbChatManager manager] setSecretKey:decodedData];
 }
 
-- (void)showAlert {
+- (void)showAlertWithMessage:(NSString*) message {
     UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Error"
-                                                        message:@"Something wrong!"
+                                                        message:message
                                                        delegate:self
                                               cancelButtonTitle:@"Ok"
                                               otherButtonTitles:nil];

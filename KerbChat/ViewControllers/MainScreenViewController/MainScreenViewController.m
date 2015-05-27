@@ -11,11 +11,12 @@
 #import "TCMessage.h"
 #import "ChatHelper.h"
 #import "AuthHelper.h"
+#import "KerbChatManager.h"
 
 @interface MainScreenViewController ()<SRWebSocketDelegate>
 
 @property (nonatomic, strong) IBOutlet UIButton* btn;
-
+@property (nonatomic) BOOL isCheckedConnection;
 @end
 
 @implementation MainScreenViewController {
@@ -25,6 +26,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    self.view.backgroundColor = [UIColor lightGrayColor];
     _messages = [[NSMutableArray alloc] init];
 }
 
@@ -38,13 +40,10 @@
     [_webSocket sendPing:nil];
 }
 
-- (void)viewDidAppear:(BOOL)animated;
+- (void)viewWillAppear:(BOOL)animated;
 {
-    [super viewDidAppear:animated];
-    NSDictionary *jsonToSend = [[ChatHelper helper] jsonForFirstSocketConnectionWithLogin:[[AuthHelper helper] login] password:[[AuthHelper helper] password]];
-//    NSData *jsonData = [NSKeyedArchiver archivedDataWithRootObject:jsonToSend];
-    NSString *jsonString = [[NSString alloc] initWithFormat:@"%@", jsonToSend];
-    [self sendMessage:jsonString];
+    [super viewWillAppear:animated];
+    [self _reconnect];
 }
 
 - (void)viewDidDisappear:(BOOL)animated
@@ -62,17 +61,21 @@
     _webSocket.delegate = nil;
     [_webSocket close];
     
-    _webSocket = [[SRWebSocket alloc] initWithURLRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:@"ws://ancient-fortress-4575.herokuapp.com/chat"]]];
+    NSString *chatUrl = [[KerbChatManager manager] chatUrlString];
+    NSURLRequest *request = [NSURLRequest requestWithURL:[NSURL URLWithString:chatUrl]];
+    _webSocket = [[SRWebSocket alloc] initWithURLRequest:request];
     _webSocket.delegate = self;
     
-    // self.title = @"Opening Connection...";
     [_webSocket open];
     
 }
 - (void)webSocketDidOpen:(SRWebSocket *)webSocket;
 {
-    NSLog(@"Websocket Connected");
+    NSLog(@"Websocket connected");
     self.title = @"Connected!";
+    self.isCheckedConnection = NO;
+    [self sendJsonString];
+    
 }
 
 - (void)webSocket:(SRWebSocket *)webSocket didFailWithError:(NSError *)error;
@@ -84,8 +87,14 @@
 
 - (void)webSocket:(SRWebSocket *)webSocket didReceiveMessage:(id)message;
 {
+    if (!self.isCheckedConnection) {
+        NSDictionary *json = [[ChatHelper helper] decryptedJsonForFirstReceive:message];
+        NSLog(@"Received JSON : %@",json);
+        return;
+    }
     NSLog(@"Received \"%@\"", message);
     [_messages addObject:[[TCMessage alloc] initWithMessage:message fromMe:NO]];
+    
 }
 
 - (void)webSocket:(SRWebSocket *)webSocket didCloseWithCode:(NSInteger)code reason:(NSString *)reason wasClean:(BOOL)wasClean;
@@ -107,6 +116,18 @@
     return YES;
 }
 
+- (void) sendJsonString {
+    NSDictionary *jsonToSend = [[ChatHelper helper] jsonForFirstSocketConnectionWithLogin:[[AuthHelper helper] login]
+                                                                                 password:[[AuthHelper helper] password]];
+    NSData *jsonData = [NSJSONSerialization dataWithJSONObject:jsonToSend
+                                                            options:NSJSONWritingPrettyPrinted
+                                                              error:nil];
+    NSString *jsonString = [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
+    if ([self sendMessage:jsonString]) {
+        NSLog(@"Message sent");
+    }
+    
+}
 
 @end
 

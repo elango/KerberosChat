@@ -31,15 +31,15 @@
                                                   password:(NSString*)password {
     self.passwordData = [password dataUsingEncoding:NSUTF8StringEncoding];
     NSDictionary *jsonDictionary = [NSDictionary dictionaryWithObjectsAndKeys:
-                                    @"tgs", @"tgs_name",
-                                    @"2015-05-23 09:44:44", @"timestamp",
+                                    login, @"user_name",
+                                    @"2015-07-23 09:44:44", @"timestamp",
                                     nil];
     return [self jsonToChatWithDictionary:jsonDictionary];
 }
 
 - (NSDictionary*)jsonToChatWithDictionary:(NSDictionary*) jsonDictionary {
     NSString *encryptedJson = [[KerbChatManager manager] encryptJsonFromDictionary:jsonDictionary
-                                                                           withKey:self.passwordData];
+                                                                           withKey:[[KerbChatManager manager] secretKey]];
     NSDictionary *json = [NSDictionary dictionaryWithObjectsAndKeys:
                                     @"login", @"type",
                                     encryptedJson, @"authenticator",
@@ -48,6 +48,16 @@
                                     nil];
     return json;
     
+}
+
+-(NSDictionary*)decryptedJsonForFirstReceive:(NSString*) message {
+    NSData *jsonData = [[KerbChatManager manager] decryptJsonFromData:[message dataUsingEncoding:NSUTF8StringEncoding]
+                                           withKey:[[KerbChatManager manager] secretKey]];
+    NSError *errorJson = nil;
+    NSDictionary* jsonDictionary = [NSJSONSerialization JSONObjectWithData:jsonData
+                                                                       options:kNilOptions
+                                                                         error:&errorJson];
+    return jsonDictionary;
 }
 
 @end

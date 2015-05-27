@@ -12,6 +12,7 @@
 
 const NSString *kLOGIN_URL_STRING = @"https://ancient-fortress-4575.herokuapp.com/as/login";
 const NSString *kTGS_URL_STRING = @"https://ancient-fortress-4575.herokuapp.com/tgs";
+const NSString *kCHAT_STRING = @"ws://ancient-fortress-4575.herokuapp.com/chat";
 
 @interface KerbChatManager ()
 
@@ -40,7 +41,15 @@ const NSString *kTGS_URL_STRING = @"https://ancient-fortress-4575.herokuapp.com/
     return [kTGS_URL_STRING copy];
 }
 
+
+- (NSString*)chatUrlString {
+    return [kCHAT_STRING copy];
+}
+
 - (NSString*)encryptJsonFromDictionary:(NSDictionary*) json withKey:(NSData*) key{
+    if (key == nil) {
+        key = [self secretKey];
+    }
     NSData *jsonToEncrypt = [NSJSONSerialization dataWithJSONObject:json
                                                             options:NSJSONWritingPrettyPrinted
                                                               error:nil];

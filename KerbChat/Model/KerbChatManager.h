@@ -18,6 +18,7 @@
 
 - (NSString*)loginUrlString;
 - (NSString*)tgsUrlString;
+- (NSString*)chatUrlString;
 
 - (NSString*)getCurrentDataString;
 - (NSString*)encryptJsonFromDictionary:(NSDictionary*) json withKey:(NSData*) key;

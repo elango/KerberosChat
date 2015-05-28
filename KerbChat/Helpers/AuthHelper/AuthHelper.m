@@ -31,10 +31,10 @@
 }
 
 - (void)connectToChatWithLogin:(NSString*) login password:(NSString*)password {
-#warning uncomment for hash
-//    self.passwordData = [[KerbChatManager manager]
-//                         hashForPasswordData:[password dataUsingEncoding:NSUTF8StringEncoding]];
-    self.passwordData = [password dataUsingEncoding:NSUTF8StringEncoding];
+#warning uncomment for non-hash
+    self.passwordData = [[KerbChatManager manager]
+                         hashForPasswordData:[password dataUsingEncoding:NSUTF8StringEncoding]];
+//    self.passwordData = [password dataUsingEncoding:NSUTF8StringEncoding];
     [self setPassword:password];
     [self setLogin:login];
     NSDictionary *jsonDictionary = [NSDictionary dictionaryWithObjectsAndKeys:

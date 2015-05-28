@@ -7,12 +7,14 @@
 //
 
 #import <Foundation/Foundation.h>
-
+#import "SRWebSocket.h"
 
 @interface KerbChatManager : NSObject
 
 @property (nonatomic) BOOL isLoggedIn;
 @property (nonatomic, strong) NSData *secretKey;
+
+@property (nonatomic,strong) SRWebSocket *socket;
 
 + (KerbChatManager*)manager;
 
@@ -23,6 +25,11 @@
 - (NSString*)getCurrentDataString;
 - (NSString*)encryptJsonFromDictionary:(NSDictionary*) json withKey:(NSData*) key;
 - (NSData*)decryptJsonFromData:(NSData*) result withKey:(NSData*) key;
+
+- (void)initSocketWithUrl:(NSString*) url;
+- (void)openSocket;
+- (void)closeSocket;
+- (void)removeSocket;
 
 - (NSString*)hashForPasswordString:(NSString*)password;
 - (NSData*)hashForPasswordData:(NSData*)password;

@@ -46,6 +46,9 @@ const NSString *kCHAT_STRING = @"ws://ancient-fortress-4575.herokuapp.com/chat";
     return [kCHAT_STRING copy];
 }
 
+#pragma mark
+#pragma mark Encrypt/Decrypt
+
 - (NSString*)encryptJsonFromDictionary:(NSDictionary*) json withKey:(NSData*) key{
     if (key == nil) {
         key = [self secretKey];
@@ -72,11 +75,26 @@ const NSString *kCHAT_STRING = @"ws://ancient-fortress-4575.herokuapp.com/chat";
     return decryptedResult;
 }
 
-- (NSString*) getCurrentDataString {
-    NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
-    [formatter setDateFormat:@"yyyy-MM-dd HH:mm:ss"];
-    NSString *stringFromDate = [formatter stringFromDate:[NSDate date]];
-    return stringFromDate;
+#pragma mark 
+#pragma mark Socket methods
+
+- (void)initSocketWithUrl:(NSString*) url {
+    NSURLRequest *request = [NSURLRequest requestWithURL:[NSURL URLWithString:url]];
+    if (self.socket == nil) {
+        self.socket = [[SRWebSocket alloc] initWithURLRequest:request];
+    }
+}
+
+- (void)openSocket {
+    [self.socket open];
+}
+
+- (void)closeSocket {
+    [self.socket close];
+}
+
+- (void)removeSocket {
+    self.socket = nil;
 }
 
 #pragma mark
@@ -113,5 +131,14 @@ const NSString *kCHAT_STRING = @"ws://ancient-fortress-4575.herokuapp.com/chat";
     return halfSizeHash;
 }
 
+#pragma mark
+#pragma mark 
+
+- (NSString*) getCurrentDataString {
+    NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+    [formatter setDateFormat:@"yyyy-MM-dd HH:mm:ss"];
+    NSString *stringFromDate = [formatter stringFromDate:[NSDate date]];
+    return stringFromDate;
+}
 
 @end

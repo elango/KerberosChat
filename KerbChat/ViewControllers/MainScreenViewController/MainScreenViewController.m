@@ -17,72 +17,64 @@
 
 @property (nonatomic, strong) IBOutlet UIButton* btn;
 @property (nonatomic) BOOL isCheckedConnection;
+@property (nonatomic, strong) SRWebSocket *webSocket;
+@property (nonatomic,strong) NSMutableArray *messages;
+
+
 @end
 
-@implementation MainScreenViewController {
-    SRWebSocket *_webSocket;
-    NSMutableArray *_messages;
-}
+@implementation MainScreenViewController
 
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.view.backgroundColor = [UIColor lightGrayColor];
-    _messages = [[NSMutableArray alloc] init];
+    self.messages = [[NSMutableArray alloc] init];
 }
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
 }
 
-- (void)sendPing:(id)sender;
-{
-    [_webSocket sendPing:nil];
-}
-
-- (void)viewWillAppear:(BOOL)animated;
-{
+- (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
-    [self _reconnect];
+    [self connect];
 }
 
-- (void)viewDidDisappear:(BOOL)animated
-{
+- (void)viewDidDisappear:(BOOL)animated {
     [super viewDidDisappear:animated];
-    
-    _webSocket.delegate = nil;
-    [_webSocket close];
-    _webSocket = nil;
+    [[KerbChatManager manager] closeSocket];
+    self.webSocket.delegate = nil;
+    [[KerbChatManager manager] removeSocket];
+    self.webSocket = nil;
 }
 
 
-- (void)_reconnect;
+- (void)connect
 {
-    _webSocket.delegate = nil;
-    [_webSocket close];
-    
     NSString *chatUrl = [[KerbChatManager manager] chatUrlString];
-    NSURLRequest *request = [NSURLRequest requestWithURL:[NSURL URLWithString:chatUrl]];
-    _webSocket = [[SRWebSocket alloc] initWithURLRequest:request];
-    _webSocket.delegate = self;
-    
-    [_webSocket open];
-    
+    [[KerbChatManager manager] initSocketWithUrl:chatUrl];
+    self.webSocket = [[KerbChatManager manager] socket];
+    self.webSocket.delegate = self;
+    [[KerbChatManager manager] openSocket];
 }
-- (void)webSocketDidOpen:(SRWebSocket *)webSocket;
+
+#pragma mark 
+#pragma mark Socket Delegate methods
+
+- (void)webSocketDidOpen:(SRWebSocket *)webSocket
 {
     NSLog(@"Websocket connected");
     self.title = @"Connected!";
     self.isCheckedConnection = NO;
     [self sendJsonString];
-    
 }
 
-- (void)webSocket:(SRWebSocket *)webSocket didFailWithError:(NSError *)error;
+- (void)webSocket:(SRWebSocket *)webSocket didFailWithError:(NSError *)error
 {
     NSLog(@":( Websocket Failed With Error %@", error);
     self.title = @"Connection Failed! (see logs)";
-    _webSocket = nil;
+    [[KerbChatManager manager] removeSocket];
+    self.webSocket = nil;
 }
 
 - (void)webSocket:(SRWebSocket *)webSocket didReceiveMessage:(id)message;
@@ -93,26 +85,25 @@
         return;
     }
     NSLog(@"Received \"%@\"", message);
-    [_messages addObject:[[TCMessage alloc] initWithMessage:message fromMe:NO]];
+    [self.messages addObject:[[TCMessage alloc] initWithMessage:message fromMe:NO]];
     
 }
 
-- (void)webSocket:(SRWebSocket *)webSocket didCloseWithCode:(NSInteger)code reason:(NSString *)reason wasClean:(BOOL)wasClean;
+- (void)webSocket:(SRWebSocket *)webSocket didCloseWithCode:(NSInteger)code reason:(NSString *)reason wasClean:(BOOL)wasClean
 {
     NSLog(@"WebSocket closed");
     self.title = @"Connection Closed! (see logs)";
-    _webSocket = nil;
+    [[KerbChatManager manager] removeSocket];
+    self.webSocket = nil;
 }
 
-- (void)webSocket:(SRWebSocket *)webSocket didReceivePong:(NSData *)pongPayload;
-{
-    NSLog(@"Websocket received pong");
-}
+#pragma mark
+#pragma mark Sending methods
 
 - (bool)sendMessage:(NSString*) message
 {
-    [_webSocket send:message];
-    [_messages addObject:[[TCMessage alloc] initWithMessage:message fromMe:YES]];
+    [self.webSocket send:message];
+    [self.messages addObject:[[TCMessage alloc] initWithMessage:message fromMe:YES]];
     return YES;
 }
 

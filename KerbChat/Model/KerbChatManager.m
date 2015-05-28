@@ -94,7 +94,16 @@ const NSString *kCHAT_STRING = @"ws://ancient-fortress-4575.herokuapp.com/chat";
 }
 
 - (void)removeSocket {
+    self.socket.delegate = nil;
     self.socket = nil;
+}
+
+- (void)setSocketDelegate:(id) delegate {
+    self.socket.delegate = delegate;
+}
+
+- (void)sendSocketMessage:(id) message {
+    [self.socket send:message];
 }
 
 #pragma mark

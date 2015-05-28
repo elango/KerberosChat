@@ -30,6 +30,8 @@
 - (void)openSocket;
 - (void)closeSocket;
 - (void)removeSocket;
+- (void)setSocketDelegate:(id) delegate;
+- (void)sendSocketMessage:(id) message;
 
 - (NSString*)hashForPasswordString:(NSString*)password;
 - (NSData*)hashForPasswordData:(NSData*)password;

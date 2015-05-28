@@ -17,9 +17,7 @@
 
 @property (nonatomic, strong) IBOutlet UIButton* btn;
 @property (nonatomic) BOOL isCheckedConnection;
-@property (nonatomic, strong) SRWebSocket *webSocket;
 @property (nonatomic,strong) NSMutableArray *messages;
-
 
 @end
 
@@ -43,9 +41,7 @@
 - (void)viewDidDisappear:(BOOL)animated {
     [super viewDidDisappear:animated];
     [[KerbChatManager manager] closeSocket];
-    self.webSocket.delegate = nil;
     [[KerbChatManager manager] removeSocket];
-    self.webSocket = nil;
 }
 
 
@@ -53,8 +49,8 @@
 {
     NSString *chatUrl = [[KerbChatManager manager] chatUrlString];
     [[KerbChatManager manager] initSocketWithUrl:chatUrl];
-    self.webSocket = [[KerbChatManager manager] socket];
-    self.webSocket.delegate = self;
+    [[KerbChatManager manager] socket];
+    [[KerbChatManager manager] setSocketDelegate:self];
     [[KerbChatManager manager] openSocket];
 }
 
@@ -74,7 +70,6 @@
     NSLog(@":( Websocket Failed With Error %@", error);
     self.title = @"Connection Failed! (see logs)";
     [[KerbChatManager manager] removeSocket];
-    self.webSocket = nil;
 }
 
 - (void)webSocket:(SRWebSocket *)webSocket didReceiveMessage:(id)message;
@@ -94,7 +89,6 @@
     NSLog(@"WebSocket closed");
     self.title = @"Connection Closed! (see logs)";
     [[KerbChatManager manager] removeSocket];
-    self.webSocket = nil;
 }
 
 #pragma mark
@@ -102,7 +96,7 @@
 
 - (bool)sendMessage:(NSString*) message
 {
-    [self.webSocket send:message];
+    [[KerbChatManager manager] sendSocketMessage:message];
     [self.messages addObject:[[TCMessage alloc] initWithMessage:message fromMe:YES]];
     return YES;
 }

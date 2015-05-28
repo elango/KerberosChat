@@ -39,7 +39,7 @@
     [self setLogin:login];
     NSDictionary *jsonDictionary = [NSDictionary dictionaryWithObjectsAndKeys:
                                     @"tgs", @"tgs_name",
-                                    @"2015-07-23 09:44:44", @"timestamp",
+                                    [[KerbChatManager manager] getCurrentDataString], @"timestamp",
                                     nil];
     [self authentificateWithJson:jsonDictionary];
     
@@ -109,7 +109,7 @@
 - (NSData*)encryptedDataFromTgsWithTicket:(NSString*) ticket error:(NSError**) error{
     NSDictionary *jsonDictionary = [NSDictionary dictionaryWithObjectsAndKeys:
                                     self.login, @"user_name",
-                                    @"2015-07-23 09:44:44", @"timestamp",
+                                    [[KerbChatManager manager] getCurrentDataString], @"timestamp",
                                     nil];
     NSString *authenticator = [[KerbChatManager manager]
                                encryptJsonFromDictionary:jsonDictionary

@@ -32,7 +32,7 @@
     self.passwordData = [password dataUsingEncoding:NSUTF8StringEncoding];
     NSDictionary *jsonDictionary = [NSDictionary dictionaryWithObjectsAndKeys:
                                     login, @"user_name",
-                                    @"2015-07-23 09:44:44", @"timestamp",
+                                    [[KerbChatManager manager] getCurrentDataString], @"timestamp",
                                     nil];
     return [self jsonToChatWithDictionary:jsonDictionary];
 }

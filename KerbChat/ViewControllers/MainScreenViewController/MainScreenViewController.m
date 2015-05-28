@@ -16,7 +16,6 @@
 @interface MainScreenViewController ()<SRWebSocketDelegate>
 
 @property (nonatomic, strong) IBOutlet UIButton* btn;
-@property (nonatomic) BOOL isCheckedConnection;
 @property (nonatomic,strong) NSMutableArray *messages;
 
 @end
@@ -61,8 +60,7 @@
 {
     NSLog(@"Websocket connected");
     self.title = @"Connected!";
-    self.isCheckedConnection = NO;
-    [self sendJsonString];
+    [self sendInitialMessage];
 }
 
 - (void)webSocket:(SRWebSocket *)webSocket didFailWithError:(NSError *)error
@@ -74,14 +72,9 @@
 
 - (void)webSocket:(SRWebSocket *)webSocket didReceiveMessage:(id)message;
 {
-    if (!self.isCheckedConnection) {
-        NSDictionary *json = [[ChatHelper helper] decryptedJsonForFirstReceive:message];
-        NSLog(@"Received JSON : %@",json);
-        return;
-    }
-    NSLog(@"Received \"%@\"", message);
-    [self.messages addObject:[[TCMessage alloc] initWithMessage:message fromMe:NO]];
-    
+    NSDictionary *json = [[ChatHelper helper] decryptedJsonForFirstReceive:message];
+    NSString *messageType = [json valueForKey:@"type"];
+    [self handlingReceiveMessage:json withType:messageType];
 }
 
 - (void)webSocket:(SRWebSocket *)webSocket didCloseWithCode:(NSInteger)code reason:(NSString *)reason wasClean:(BOOL)wasClean
@@ -94,14 +87,14 @@
 #pragma mark
 #pragma mark Sending methods
 
-- (bool)sendMessage:(NSString*) message
+- (BOOL)sendMessage:(NSString*) message
 {
     [[KerbChatManager manager] sendSocketMessage:message];
     [self.messages addObject:[[TCMessage alloc] initWithMessage:message fromMe:YES]];
     return YES;
 }
 
-- (void) sendJsonString {
+- (void)sendInitialMessage {
     NSDictionary *jsonToSend = [[ChatHelper helper] jsonForFirstSocketConnectionWithLogin:[[AuthHelper helper] login]
                                                                                  password:[[AuthHelper helper] password]];
     NSData *jsonData = [NSJSONSerialization dataWithJSONObject:jsonToSend
@@ -109,7 +102,25 @@
                                                               error:nil];
     NSString *jsonString = [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
     if ([self sendMessage:jsonString]) {
-        NSLog(@"Message sent");
+        NSLog(@"Initial request sent");
+    }
+}
+
+#pragma mark
+#pragma mark Receive methods
+
+- (void)handlingReceiveMessage:(NSDictionary*) message withType:(NSString*) type {
+    if ([type isEqualToString:@"online"]) {
+        NSLog(@"---- %@ ---- Received JSON with online type : %@",[message valueForKey:@"timestamp"], message);
+        [[KerbChatManager manager] setRooms: [message valueForKey:@"rooms"]];
+        [[KerbChatManager manager] setOnlineUsers:[message valueForKey:@"users_online"]];
+        return;
+    }
+    if ([type isEqualToString:@"new_chat"]) {
+        NSLog(@"Received JSON with new_chat type : %@",message);
+        [[[KerbChatManager manager] rooms] addObject:[message valueForKey:@"room"]];
+        // TODO : set secret for new room
+        return;
     }
     
 }

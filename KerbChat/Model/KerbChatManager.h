@@ -13,8 +13,9 @@
 
 @property (nonatomic) BOOL isLoggedIn;
 @property (nonatomic, strong) NSData *secretKey;
-
-@property (nonatomic,strong) SRWebSocket *socket;
+@property (nonatomic, strong) NSMutableArray *rooms;
+@property (nonatomic, strong) NSMutableArray *onlineUsers;
+@property (nonatomic, strong) SRWebSocket *socket;
 
 + (KerbChatManager*)manager;
 

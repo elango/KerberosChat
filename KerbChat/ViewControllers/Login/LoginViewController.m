@@ -23,7 +23,6 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    [self successfulLogin];
 }
 
 - (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event {
@@ -36,16 +35,15 @@
 }
 
 - (IBAction)login:(id)sender {
-    [[AuthHelper helper] connectToChatWithLogin:self.loginTextField.text password:self.passwordTextField.text];
-    if ([[AuthHelper helper] isOk]) {
-        [self successfulLogin];
-    }
 }
 
-- (void)successfulLogin {
-    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
-    MainScreenViewController *viewController = (MainScreenViewController *)[storyboard instantiateViewControllerWithIdentifier:@"main"];
-    [self presentViewController:viewController animated:YES completion:nil];
+- (BOOL)shouldPerformSegueWithIdentifier:(NSString *)identifier sender:(id)sender {
+    [[AuthHelper helper] connectToChatWithLogin:self.loginTextField.text password:self.passwordTextField.text];
+    if ([[AuthHelper helper] isOk]) {
+        return YES;
+    }
+    return NO;
 }
+
 
 @end

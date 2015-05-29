@@ -13,10 +13,9 @@
 #import "AuthHelper.h"
 #import "KerbChatManager.h"
 
-@interface MainScreenViewController ()<SRWebSocketDelegate>
+@interface MainScreenViewController ()<SRWebSocketDelegate, UITableViewDelegate, UITableViewDataSource>
 
-@property (nonatomic, strong) IBOutlet UIButton* btn;
-@property (nonatomic,strong) NSMutableArray *messages;
+@property (weak, nonatomic) IBOutlet UITableView *roomsTableView;
 
 @end
 
@@ -25,7 +24,6 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.view.backgroundColor = [UIColor lightGrayColor];
-    self.messages = [[NSMutableArray alloc] init];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -34,6 +32,7 @@
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
+    [self.navigationController setNavigationBarHidden:NO animated:animated];
     [self connect];
 }
 
@@ -90,7 +89,7 @@
 - (BOOL)sendMessage:(NSString*) message
 {
     [[KerbChatManager manager] sendSocketMessage:message];
-    [self.messages addObject:[[TCMessage alloc] initWithMessage:message fromMe:YES]];
+//    [self.messages addObject:[[TCMessage alloc] initWithMessage:message fromMe:YES]];
     return YES;
 }
 
@@ -114,6 +113,7 @@
         NSLog(@"---- %@ ---- Received JSON with online type : %@",[message valueForKey:@"timestamp"], message);
         [[KerbChatManager manager] setRooms: [message valueForKey:@"rooms"]];
         [[KerbChatManager manager] setOnlineUsers:[message valueForKey:@"users_online"]];
+        [self.roomsTableView reloadData];
         return;
     }
     if ([type isEqualToString:@"new_chat"]) {
@@ -123,6 +123,30 @@
         return;
     }
     
+}
+
+#pragma mark
+#pragma mark Table View delegate & data source
+
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
+    return [[[KerbChatManager manager] rooms] count];
+}
+
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    static NSString *CellIdentifier = @"Cell";
+    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+    if (cell == nil) {
+        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault
+                                       reuseIdentifier:CellIdentifier];
+    }
+    cell.textLabel.text = [[[[KerbChatManager manager] rooms] objectAtIndex:indexPath.row] valueForKey:@"name"];
+    cell.detailTextLabel.text = [[[[KerbChatManager manager] rooms] objectAtIndex:indexPath.row] valueForKey:@"users"];
+    return cell;
+}
+
+-(void) tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    [tableView deselectRowAtIndexPath:indexPath animated:YES];
 }
 
 @end

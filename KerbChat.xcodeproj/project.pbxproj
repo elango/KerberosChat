@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		E3001B351B19048E0052F5D7 /* ChatViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E3001B341B19048E0052F5D7 /* ChatViewController.m */; };
 		E307FE501B13D7E9002862E7 /* SRWebSocket.m in Sources */ = {isa = PBXBuildFile; fileRef = E307FE4F1B13D7E9002862E7 /* SRWebSocket.m */; };
 		E307FE521B13DD48002862E7 /* libicucore.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = E307FE511B13DD48002862E7 /* libicucore.dylib */; };
 		E307FE571B13F56D002862E7 /* ChatHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = E307FE561B13F56D002862E7 /* ChatHelper.m */; };
@@ -38,6 +39,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		E3001B331B19048E0052F5D7 /* ChatViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ChatViewController.h; sourceTree = "<group>"; };
+		E3001B341B19048E0052F5D7 /* ChatViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ChatViewController.m; sourceTree = "<group>"; };
 		E307FE4D1B13D7E9002862E7 /* SocketRocket-Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "SocketRocket-Prefix.pch"; sourceTree = "<group>"; };
 		E307FE4E1B13D7E9002862E7 /* SRWebSocket.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SRWebSocket.h; sourceTree = "<group>"; };
 		E307FE4F1B13D7E9002862E7 /* SRWebSocket.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SRWebSocket.m; sourceTree = "<group>"; };
@@ -94,6 +97,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		E3001B321B1904690052F5D7 /* ChatViewController */ = {
+			isa = PBXGroup;
+			children = (
+				E3001B331B19048E0052F5D7 /* ChatViewController.h */,
+				E3001B341B19048E0052F5D7 /* ChatViewController.m */,
+			);
+			path = ChatViewController;
+			sourceTree = "<group>";
+		};
 		E307FE4C1B13D7E9002862E7 /* SocketRocket */ = {
 			isa = PBXGroup;
 			children = (
@@ -208,6 +220,7 @@
 		E39E7F451B108E6F00EA1878 /* ViewControllers */ = {
 			isa = PBXGroup;
 			children = (
+				E3001B321B1904690052F5D7 /* ChatViewController */,
 				E354AEB81B13CD41007A6642 /* MainScreenViewController */,
 				E39E7F461B108E7800EA1878 /* Login */,
 			);
@@ -355,6 +368,7 @@
 			files = (
 				E39E7F441B108E6A00EA1878 /* LoginViewController.m in Sources */,
 				E354AEBB1B13CD41007A6642 /* MainScreenViewController.m in Sources */,
+				E3001B351B19048E0052F5D7 /* ChatViewController.m in Sources */,
 				E354AEB41B13B8F0007A6642 /* AuthHelper.m in Sources */,
 				E39E7F511B12385000EA1878 /* NSData+AES.m in Sources */,
 				E39E7F4A1B108EC200EA1878 /* KerbChatManager.m in Sources */,

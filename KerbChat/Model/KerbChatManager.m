@@ -25,6 +25,7 @@ const NSString *kCHAT_STRING = @"ws://ancient-fortress-4575.herokuapp.com/chat";
     static KerbChatManager *manager = nil;
     dispatch_once(&onceToken, ^{
         manager = [[self alloc] init];
+        manager.rooms = [NSMutableArray array];
     });
     return manager;
 }

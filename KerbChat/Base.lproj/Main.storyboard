@@ -52,7 +52,6 @@
                                 </state>
                                 <connections>
                                     <action selector="login:" destination="gl3-hG-GJl" eventType="touchUpInside" id="Oa8-MH-330"/>
-                                    <segue destination="BYZ-38-t0r" kind="show" id="dEL-Bn-C26"/>
                                 </connections>
                             </button>
                         </subviews>
@@ -81,6 +80,7 @@
                         <outlet property="loginButton" destination="jPA-MZ-PfJ" id="kta-df-oup"/>
                         <outlet property="loginTextField" destination="wE0-vI-hkr" id="vcG-zF-pgH"/>
                         <outlet property="passwordTextField" destination="6Zr-V3-JgX" id="D4n-Ho-YBd"/>
+                        <segue destination="BYZ-38-t0r" kind="show" identifier="login" id="24g-4v-K6K"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="44L-Mj-AWA" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -96,7 +96,7 @@
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
                     <connections>
-                        <segue destination="gl3-hG-GJl" kind="relationship" relationship="rootViewController" id="lhM-Yp-xld"/>
+                        <segue destination="gl3-hG-GJl" kind="relationship" relationship="rootViewController" id="1MW-iT-Aq0"/>
                     </connections>
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="h1S-NY-thb" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -115,17 +115,31 @@
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="7ZW-83-7dR">
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="88" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="7ZW-83-7dR">
                                 <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <prototypes>
-                                    <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" id="s10-WA-hXF">
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="Cell" textLabel="7DI-wp-Gg0" detailTextLabel="7sh-F1-ne5" style="IBUITableViewCellStyleSubtitle" id="s10-WA-hXF">
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="s10-WA-hXF" id="hEh-Vi-fJm">
                                             <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Title" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="7DI-wp-Gg0">
+                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="16"/>
+                                                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                                <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Detail" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="7sh-F1-ne5">
+                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="11"/>
+                                                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                            </subviews>
                                         </tableViewCellContentView>
                                         <connections>
-                                            <segue destination="U8Y-Rh-FU2" kind="show" id="l7Y-Ct-RWe"/>
+                                            <segue destination="U8Y-Rh-FU2" kind="show" identifier="room" id="l7Y-Ct-RWe"/>
                                         </connections>
                                     </tableViewCell>
                                 </prototypes>
@@ -144,6 +158,11 @@
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" title="Rooms" id="95G-zu-EiB">
+                        <barButtonItem key="leftBarButtonItem" title="Logout" id="e1u-xO-7co">
+                            <connections>
+                                <action selector="logoutButton:" destination="BYZ-38-t0r" id="g8C-z8-Ohg"/>
+                            </connections>
+                        </barButtonItem>
                         <barButtonItem key="rightBarButtonItem" systemItem="add" id="6JU-Ot-dKB"/>
                     </navigationItem>
                     <connections>

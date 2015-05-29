@@ -11,7 +11,6 @@
 
 @interface KerbChatManager : NSObject
 
-@property (nonatomic) BOOL isLoggedIn;
 @property (nonatomic, strong) NSData *secretKey;
 @property (nonatomic, strong) NSMutableArray *rooms;
 @property (nonatomic, strong) NSMutableArray *onlineUsers;

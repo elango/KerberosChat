@@ -87,7 +87,9 @@ const NSString *kCHAT_STRING = @"ws://ancient-fortress-4575.herokuapp.com/chat";
 }
 
 - (void)openSocket {
-    [self.socket open];
+    if (self.socket.readyState != SR_OPEN) {
+        [self.socket open];
+    }
 }
 
 - (void)closeSocket {

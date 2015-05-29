@@ -23,6 +23,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    [self.navigationController setNavigationBarHidden: YES animated:YES];
 }
 
 - (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event {
@@ -35,15 +36,10 @@
 }
 
 - (IBAction)login:(id)sender {
-}
-
-- (BOOL)shouldPerformSegueWithIdentifier:(NSString *)identifier sender:(id)sender {
     [[AuthHelper helper] connectToChatWithLogin:self.loginTextField.text password:self.passwordTextField.text];
     if ([[AuthHelper helper] isOk]) {
-        return YES;
+        [self performSegueWithIdentifier:@"login" sender:self];
     }
-    return NO;
 }
-
 
 @end

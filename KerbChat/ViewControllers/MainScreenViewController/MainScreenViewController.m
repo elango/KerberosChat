@@ -23,7 +23,6 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.view.backgroundColor = [UIColor lightGrayColor];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -38,10 +37,7 @@
 
 - (void)viewDidDisappear:(BOOL)animated {
     [super viewDidDisappear:animated];
-    [[KerbChatManager manager] closeSocket];
-    [[KerbChatManager manager] removeSocket];
 }
-
 
 - (void)connect
 {
@@ -58,14 +54,12 @@
 - (void)webSocketDidOpen:(SRWebSocket *)webSocket
 {
     NSLog(@"Websocket connected");
-    self.title = @"Connected!";
     [self sendInitialMessage];
 }
 
 - (void)webSocket:(SRWebSocket *)webSocket didFailWithError:(NSError *)error
 {
     NSLog(@":( Websocket Failed With Error %@", error);
-    self.title = @"Connection Failed! (see logs)";
     [[KerbChatManager manager] removeSocket];
 }
 
@@ -79,7 +73,6 @@
 - (void)webSocket:(SRWebSocket *)webSocket didCloseWithCode:(NSInteger)code reason:(NSString *)reason wasClean:(BOOL)wasClean
 {
     NSLog(@"WebSocket closed");
-    self.title = @"Connection Closed! (see logs)";
     [[KerbChatManager manager] removeSocket];
 }
 
@@ -140,13 +133,21 @@
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault
                                        reuseIdentifier:CellIdentifier];
     }
+    cell.textLabel.font = [UIFont fontWithName:@"Helvetica-Light" size:18];
+    cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
     cell.textLabel.text = [[[[KerbChatManager manager] rooms] objectAtIndex:indexPath.row] valueForKey:@"name"];
-    cell.detailTextLabel.text = [[[[KerbChatManager manager] rooms] objectAtIndex:indexPath.row] valueForKey:@"users"];
+    cell.detailTextLabel.text = [[[[[KerbChatManager manager] rooms] objectAtIndex:indexPath.row] valueForKey:@"users"] componentsJoinedByString:@""];
     return cell;
 }
 
 -(void) tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
+}
+
+- (IBAction)logoutButton:(id)sender {
+    [[KerbChatManager manager] closeSocket];
+    [[KerbChatManager manager] removeSocket];
+    [self.navigationController popViewControllerAnimated:YES];
 }
 
 @end

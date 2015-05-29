@@ -19,17 +19,6 @@
 
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
-    NSString *identifier;
-    if(![[KerbChatManager manager] isLoggedIn]) {
-        identifier=@"loginScreen";
-    } else {
-        identifier=@"main";
-    }
-    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
-    UIViewController *screen = [storyboard instantiateViewControllerWithIdentifier:identifier];
-    [self.window setRootViewController:screen];
-    return YES;
-
     return YES;
 }
 

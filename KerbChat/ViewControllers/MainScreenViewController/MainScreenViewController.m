@@ -45,7 +45,6 @@
 {
     NSString *chatUrl = [[KerbChatManager manager] chatUrlString];
     [[KerbChatManager manager] initSocketWithUrl:chatUrl];
-    [[KerbChatManager manager] socket];
     [[KerbChatManager manager] setSocketDelegate:self];
     [[KerbChatManager manager] openSocket];
 }
@@ -111,6 +110,13 @@
 #pragma mark Receive methods
 
 - (void)handlingReceiveMessage:(NSDictionary*) message withType:(NSString*) type {
+    if ([type isEqualToString:@"handshake"]) {
+        NSString *service = ((NSArray*)[message valueForKey:@"service"]).firstObject;
+        if (![service isEqualToString:@"chat"]) {
+            [self.navigationController popViewControllerAnimated:YES];
+        }
+        return;
+    }
     if ([type isEqualToString:@"online"]) {
         NSLog(@"---- %@ ---- Received JSON with online type : %@",[message valueForKey:@"timestamp"], message);
         [[KerbChatManager manager] setRooms: [message valueForKey:@"rooms"]];

@@ -128,6 +128,7 @@
 
 #pragma mark
 #pragma mark
+
 - (void)reloadMessages:(NSDictionary*) message {
     [self.messages removeAllObjects];
     NSArray *receivedMessages = [message valueForKey:@"messages"];

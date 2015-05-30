@@ -15,9 +15,10 @@
 - (NSDictionary*)jsonForFirstSocketConnectionWithLogin:(NSString*) login
                                               password:(NSString*)password;
 
-- (NSDictionary*)decryptedJsonForFirstReceive:(NSString*) message;
-
 - (NSString*)jsonForMessageRequestFromUser:(NSString*) user
                                            withMessage:(NSString*) message andRoom:(NSString*) room;
+
+-(NSDictionary*)decryptedJsonFromServer:(NSString*) message;
+
 
 @end

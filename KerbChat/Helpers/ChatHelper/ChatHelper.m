@@ -50,6 +50,35 @@
     
 }
 
+- (NSString*)jsonForMessageRequestFromUser:(NSString*) user
+                                           withMessage:(NSString*) message andRoom:(NSString*) room {
+
+    NSDictionary *messageDictionary = [NSDictionary dictionaryWithObjectsAndKeys:
+
+                                  user, @"from",
+                                  [[KerbChatManager manager] getCurrentDataString], @"time",
+                                  //@"room_key", @"room",
+                                  message,  @"text",
+                                  nil];
+
+
+    NSDictionary *json = [NSDictionary dictionaryWithObjectsAndKeys:
+                                    @"new_message", @"type",
+                                    user, @"from",
+                                    [[KerbChatManager manager] getCurrentDataString], @"timestamp",
+                                    messageDictionary, @"message",
+                                    room, @"room",
+                                    nil];
+    return [self jsonForMessageWithDictionary:json];
+}
+
+- (NSString*)jsonForMessageWithDictionary:(NSDictionary*) jsonDictionary {
+    NSString *encryptedJson = [[KerbChatManager manager] encryptJsonFromDictionary:jsonDictionary
+                                                                           withKey:[[KerbChatManager manager] secretKey]];
+    return encryptedJson;
+    
+}
+
 -(NSDictionary*)decryptedJsonFromServer:(NSString*) message {
     NSData *jsonData = [[KerbChatManager manager] decryptJsonFromData:[message dataUsingEncoding:NSUTF8StringEncoding]
                                            withKey:[[KerbChatManager manager] secretKey]];

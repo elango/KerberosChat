@@ -105,6 +105,16 @@
     }
 }
 
+- (void)sendMessageAboutNewMessage {
+    NSString *jsonToSend = [[ChatHelper helper] jsonForMessageRequestFromUser:[[AuthHelper helper] login] withMessage:@"Hello, Alexey!" andRoom: @"TomChat"];
+  /*  NSData *jsonData = [NSJSONSerialization dataWithJSONObject:jsonToSend
+                                                            options:NSJSONWritingPrettyPrinted
+                                                              error:nil];
+    NSString *jsonString = [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];*/
+    if ([self sendMessage:jsonToSend]) {
+        NSLog(@"Message sent");
+    }
+}
 
 #pragma mark
 #pragma mark Receive methods
@@ -122,6 +132,7 @@
         [[KerbChatManager manager] setRooms: [message valueForKey:@"rooms"]];
         [[KerbChatManager manager] setOnlineUsers:[message valueForKey:@"users_online"]];
         [self.roomsTableView reloadData];
+        [self sendMessageAboutNewMessage];
         return;
     }
     if ([type isEqualToString:@"new_chat"]) {

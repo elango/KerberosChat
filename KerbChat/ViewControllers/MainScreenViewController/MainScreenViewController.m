@@ -7,6 +7,7 @@
 //
 
 #import "MainScreenViewController.h"
+#import "ChatViewController.h"
 #import "SRWebSocket.h"
 #import "TCMessage.h"
 #import "ChatHelper.h"
@@ -16,6 +17,7 @@
 @interface MainScreenViewController ()<SRWebSocketDelegate, UITableViewDelegate, UITableViewDataSource>
 
 @property (weak, nonatomic) IBOutlet UITableView *roomsTableView;
+@property (nonatomic) NSInteger clickedIndex;
 
 @end
 
@@ -48,6 +50,12 @@
     [[KerbChatManager manager] openSocket];
 }
 
+- (IBAction)logoutButton:(id)sender {
+    [[KerbChatManager manager] closeSocket];
+    [[KerbChatManager manager] removeSocket];
+    [self.navigationController popViewControllerAnimated:YES];
+}
+
 #pragma mark 
 #pragma mark Socket Delegate methods
 
@@ -65,7 +73,7 @@
 
 - (void)webSocket:(SRWebSocket *)webSocket didReceiveMessage:(id)message;
 {
-    NSDictionary *json = [[ChatHelper helper] decryptedJsonForFirstReceive:message];
+    NSDictionary *json = [[ChatHelper helper] decryptedJsonFromServer:message];
     NSString *messageType = [json valueForKey:@"type"];
     [self handlingReceiveMessage:json withType:messageType];
 }
@@ -82,13 +90,13 @@
 - (BOOL)sendMessage:(NSString*) message
 {
     [[KerbChatManager manager] sendSocketMessage:message];
-//    [self.messages addObject:[[TCMessage alloc] initWithMessage:message fromMe:YES]];
     return YES;
 }
 
 - (void)sendInitialMessage {
-    NSDictionary *jsonToSend = [[ChatHelper helper] jsonForFirstSocketConnectionWithLogin:[[AuthHelper helper] login]
-                                                                                 password:[[AuthHelper helper] password]];
+    NSDictionary *jsonToSend = [[ChatHelper helper]
+                                jsonForFirstSocketConnectionWithLogin:[[AuthHelper helper] login]
+                                password:[[AuthHelper helper] password]];
     NSData *jsonData = [NSJSONSerialization dataWithJSONObject:jsonToSend
                                                             options:NSJSONWritingPrettyPrinted
                                                               error:nil];
@@ -97,6 +105,7 @@
         NSLog(@"Initial request sent");
     }
 }
+
 
 #pragma mark
 #pragma mark Receive methods
@@ -142,12 +151,27 @@
 
 -(void) tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
+    self.clickedIndex = indexPath.row;
 }
 
-- (IBAction)logoutButton:(id)sender {
-    [[KerbChatManager manager] closeSocket];
-    [[KerbChatManager manager] removeSocket];
-    [self.navigationController popViewControllerAnimated:YES];
+-(CGFloat) tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section {
+    return 1;
+}
+
+#pragma mark
+#pragma mark
+
+-(void) prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
+    if ([[segue identifier] isEqualToString:@"room"])
+    {
+        [(ChatViewController*)[segue destinationViewController] setRoomIndex:self.clickedIndex];
+        [[KerbChatManager manager] setSocketDelegate:nil];
+    }
+    else
+    {
+        [super prepareForSegue:segue sender:sender];
+    }
+
 }
 
 @end

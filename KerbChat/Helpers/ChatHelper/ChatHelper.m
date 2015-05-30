@@ -50,7 +50,7 @@
     
 }
 
--(NSDictionary*)decryptedJsonForFirstReceive:(NSString*) message {
+-(NSDictionary*)decryptedJsonFromServer:(NSString*) message {
     NSData *jsonData = [[KerbChatManager manager] decryptJsonFromData:[message dataUsingEncoding:NSUTF8StringEncoding]
                                            withKey:[[KerbChatManager manager] secretKey]];
     NSError *errorJson = nil;
@@ -61,3 +61,4 @@
 }
 
 @end
+

@@ -52,16 +52,12 @@
 
 - (NSString*)jsonForMessageRequestFromUser:(NSString*) user
                                            withMessage:(NSString*) message andRoom:(NSString*) room {
-
     NSDictionary *messageDictionary = [NSDictionary dictionaryWithObjectsAndKeys:
-
-                                  user, @"from",
-                                  [[KerbChatManager manager] getCurrentDataString], @"time",
-                                  //@"room_key", @"room",
-                                  message,  @"text",
+                                       user, @"from",
+                                       [[KerbChatManager manager] getCurrentDataString], @"time",
+                                       message,  @"text",
+                                       room, @"room",
                                   nil];
-
-
     NSDictionary *json = [NSDictionary dictionaryWithObjectsAndKeys:
                                     @"new_message", @"type",
                                     user, @"from",
@@ -72,6 +68,58 @@
     return [self jsonForMessageWithDictionary:json];
 }
 
+- (NSString*) jsonForGoRoomWithName:(NSString*) name {
+    NSDictionary *room = [[[KerbChatManager manager] rooms] valueForKey:name];
+    NSString *roomName = [room valueForKey:@"name"];
+    NSString *secret = [[KerbChatManager manager] getSecretForRoom:roomName];
+    NSDictionary *json = [NSDictionary dictionaryWithObjectsAndKeys:
+                          secret, @"secret",
+                          @"go_room", @"type",
+                          [[AuthHelper helper] login], @"from",
+                          [[KerbChatManager manager] getCurrentDataString], @"timestamp",
+                          roomName, @"room",
+                          nil];
+    NSString *encryptedJson = [self jsonForMessageWithDictionary:json];
+    return encryptedJson;
+}
+
+- (NSString*) jsonForNewRoomWithUsers:(NSMutableArray*) users
+                            threshold:(NSString*)threshold
+                              andName:(NSString*) name {
+    NSString *login = [[AuthHelper helper] login];
+    NSString *time = [[KerbChatManager manager] getCurrentDataString];
+    NSString *thresholdValue = threshold;
+    if ([thresholdValue isEqualToString:@""]) {
+        thresholdValue = [NSString stringWithFormat:@"%ld",[users count]];
+    }
+    NSDictionary *json = [NSDictionary dictionaryWithObjectsAndKeys:
+                          @"new_room", @"type",
+                          name, @"room",
+                          login, @"from",
+                          time, @"timestamp",
+                          users, @"users",
+                          threshold, @"threshold",
+                          nil];
+    NSString *encryptedJson = [self jsonForMessageWithDictionary:json];
+    return encryptedJson;
+}
+
+
+- (NSString*)jsonForSecretWithRoom:(NSString*) room {
+    NSString *time = [[KerbChatManager manager] getCurrentDataString];
+    NSString *secret = [[KerbChatManager manager] getSecretForRoom:room];
+    NSDictionary *json = [NSDictionary dictionaryWithObjectsAndKeys:
+                          @"secret", @"type",
+                          room, @"room",
+                          secret, @"secret",
+                          time, @"timestamp",
+                          [[AuthHelper helper] login], @"from",
+                          nil];
+    NSString *encryptedJson = [self jsonForMessageWithDictionary:json];
+    return encryptedJson;
+
+}
+
 - (NSString*)jsonForMessageWithDictionary:(NSDictionary*) jsonDictionary {
     NSString *encryptedJson = [[KerbChatManager manager] encryptJsonFromDictionary:jsonDictionary
                                                                            withKey:[[KerbChatManager manager] secretKey]];
@@ -79,7 +127,7 @@
     
 }
 
--(NSDictionary*)decryptedJsonFromServer:(NSString*) message {
+- (NSDictionary*)decryptedJsonFromServer:(NSString*) message {
     NSData *jsonData = [[KerbChatManager manager] decryptJsonFromData:[message dataUsingEncoding:NSUTF8StringEncoding]
                                            withKey:[[KerbChatManager manager] secretKey]];
     NSError *errorJson = nil;
@@ -87,6 +135,15 @@
                                                                        options:kNilOptions
                                                                          error:&errorJson];
     return jsonDictionary;
+}
+
+- (void)showAlertToCloseRoom {
+    UIAlertView* alert = [[UIAlertView alloc] initWithTitle:@"Комната закрыта"
+                                                    message:@"Это связано с тем, что кто-то из участников не в сети."
+                                                   delegate:nil
+                                          cancelButtonTitle:@"OK"
+                                          otherButtonTitles: nil];
+    [alert show];
 }
 
 @end

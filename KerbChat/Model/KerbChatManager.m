@@ -25,7 +25,11 @@ const NSString *kCHAT_STRING = @"ws://ancient-fortress-4575.herokuapp.com/chat";
     static KerbChatManager *manager = nil;
     dispatch_once(&onceToken, ^{
         manager = [[self alloc] init];
-        manager.rooms = [NSMutableArray array];
+        manager.rooms = [NSMutableDictionary dictionary];
+        NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+        if (![defaults objectForKey:@"secretStore"]) {
+            [defaults setObject:[[NSDictionary alloc] init] forKey:@"secretStore"];
+        }
     });
     return manager;
 }
@@ -45,6 +49,25 @@ const NSString *kCHAT_STRING = @"ws://ancient-fortress-4575.herokuapp.com/chat";
 
 - (NSString*)chatUrlString {
     return [kCHAT_STRING copy];
+}
+
+#pragma mark
+#pragma mark Secret store
+
+- (void)addSecretToStoreWithKey:(NSString*)key andValue:(NSString*)value {
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    NSMutableDictionary *secretStore =[[defaults objectForKey:@"secretStore"] mutableCopy];
+    [secretStore setValue:value forKey:key];
+    [defaults setObject:secretStore forKey:@"secretStore"];
+    [defaults synchronize];
+    NSLog(@"%@",[defaults objectForKey:@"secretStore"]);
+}
+
+- (NSString*)getSecretForRoom:(NSString*)room {
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    NSMutableDictionary *secretStore =[[defaults objectForKey:@"secretStore"] mutableCopy];
+    NSString *secret = [secretStore valueForKey:room];
+    return secret;
 }
 
 #pragma mark

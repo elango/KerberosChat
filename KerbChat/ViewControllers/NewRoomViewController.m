@@ -1,41 +1,34 @@
 //
-//  ChatViewController.m
+//  NewRoomViewController.m
 //  KerbChat
 //
-//  Created by Anton Rodick on 29.05.15.
+//  Created by Anton Rodick on 30.05.15.
 //  Copyright (c) 2015 Anton Rodick. All rights reserved.
 //
 
-#import "ChatViewController.h"
-#import "SRWebSocket.h"
+#import "NewRoomViewController.h"
 #import "KerbChatManager.h"
 #import "ChatHelper.h"
-#import "AuthHelper.h"
 
-@interface ChatViewController () <SRWebSocketDelegate, UITableViewDelegate, UITableViewDataSource>
+@interface NewRoomViewController () <SRWebSocketDelegate, UITableViewDelegate, UITableViewDataSource>
 
-@property (weak, nonatomic) IBOutlet UITableView *messageTableView;
-@property (weak, nonatomic) IBOutlet UITextView *messageTextView;
-@property (weak, nonatomic) IBOutlet UIButton *sendButton;
-@property (nonatomic, strong) NSMutableArray *messages;
+@property (weak, nonatomic) IBOutlet UITextField *roomNameTextField;
+@property (weak, nonatomic) IBOutlet UITextField *thresholdTextField;
+@property (nonatomic, strong) NSMutableArray *selectedUsers;
 
 @end
 
-@implementation ChatViewController
+@implementation NewRoomViewController
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.messages = [NSMutableArray array];
-    self.messageTextView.layer.borderWidth = 1.0f;
-    self.messageTextView.layer.borderColor = [[UIColor lightGrayColor] CGColor];
+    self.selectedUsers = [NSMutableArray array];
     [[KerbChatManager manager] setSocketDelegate:self];
-    [self sendGoRoomMessageWithName:self.roomName];
 }
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
 }
-
 
 #pragma mark
 #pragma mark Socket Delegate methods
@@ -68,20 +61,12 @@
     return YES;
 }
 
-- (void)sendGoRoomMessageWithName:(NSString*) name {
-    NSString *encryptedJson = [[ChatHelper helper] jsonForGoRoomWithName:name];
+- (void)sendToCreateNewRoom {
+    NSString *encryptedJson = [[ChatHelper helper] jsonForNewRoomWithUsers:self.selectedUsers
+                                                                 threshold:self.thresholdTextField.text
+                                                                   andName:self.roomNameTextField.text];
     if ([self sendMessage:encryptedJson]) {
-        NSLog(@"Send go_room message");
-    }
-}
-
-- (void)sendMessageAboutNewMessage {
-    NSString *room = [[[KerbChatManager manager] rooms] valueForKey:self.roomName];
-    NSString *jsonToSend = [[ChatHelper helper] jsonForMessageRequestFromUser:[[AuthHelper helper] login]
-                                                                  withMessage:self.messageTextView.text
-                                                                      andRoom:room];
-    if ([self sendMessage:jsonToSend]) {
-        NSLog(@"Your message sent to room");
+        NSLog(@"Send new_room message");
     }
 }
 
@@ -104,22 +89,6 @@
         }
         [[KerbChatManager manager] setRooms:rooms];
         [[KerbChatManager manager] setOnlineUsers:[message valueForKey:@"users_online"]];
-        if ([[[KerbChatManager manager] rooms] valueForKey:self.roomName] == nil) {
-            [[ChatHelper helper] showAlertToCloseRoom];
-            [self.navigationController popViewControllerAnimated:YES];
-            return;
-        }
-
-        return;
-    }
-    if ([type isEqualToString:@"room_messages"]) {
-        NSLog(@"Received JSON with room_msg type : %@", message);
-        [self reloadMessages:message];
-        return;
-    }
-    if ([type isEqualToString:@"new_message"]) {
-        NSLog(@"Received JSON with new_msg type : %@", message);
-        [self addNewReceivedMessage:message];
         return;
     }
     if ([type isEqualToString:@"get_secret"]) {
@@ -128,13 +97,14 @@
         [self sendSecretMessageWithRoom:room];
         return;
     }
+
 }
 
 #pragma mark
 #pragma mark Table View delegate & data source
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    return [self.messages count];
+    return [[[KerbChatManager manager] onlineUsers] count];
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -146,15 +116,22 @@
                                       reuseIdentifier:CellIdentifier];
     }
     cell.textLabel.font = [UIFont fontWithName:@"Helvetica-Light" size:16];
-    cell.textLabel.text = [self.messages[indexPath.row] valueForKey:@"text"];
-    cell.detailTextLabel.text = [NSString stringWithFormat:@"%@ in %@",
-                                 [self.messages[indexPath.row] valueForKey:@"from"],
-                                 [self.messages[indexPath.row] valueForKey:@"time"]];
+    cell.textLabel.text = [[[KerbChatManager manager] onlineUsers] objectAtIndex:indexPath.row];
     return cell;
 }
 
 -(void) tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
+    UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
+    NSString *user = cell.textLabel.text;
+    if([self.selectedUsers containsObject:user]){
+        [self.selectedUsers removeObject:user];
+        [cell setAccessoryType:UITableViewCellAccessoryNone];
+    }else{
+        [self.selectedUsers addObject:user];
+        [cell setAccessoryType:UITableViewCellAccessoryCheckmark];
+    }
+
 }
 
 -(CGFloat) tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section {
@@ -164,23 +141,9 @@
 #pragma mark
 #pragma mark
 
-- (void)addNewReceivedMessage:(NSDictionary*) message {
-    [self.messages addObject:[[message valueForKey:@"new_message"] valueForKey:@"message"]];
-    [self.messageTableView reloadData];
-}
-
-- (void)reloadMessages:(NSDictionary*) message {
-    [self.messages removeAllObjects];
-    NSArray *receivedMessages = [message valueForKey:@"messages"];
-    for (NSDictionary *message in receivedMessages) {
-        [self.messages addObject:message];
-    }
-    [self.messageTableView reloadData];
-}
-
--(IBAction)sendMessageToChat:(id)sender {
-    [self sendMessageAboutNewMessage];
-    self.messageTextView.text = @"";
+- (IBAction)createRoom:(id)sender {
+    [self sendToCreateNewRoom];
+    [self.navigationController popViewControllerAnimated:YES];
 }
 
 @end

@@ -10,6 +10,6 @@
 
 @interface ChatViewController : UIViewController
 
-@property (nonatomic) NSInteger roomIndex;
+@property (strong, nonatomic) NSString *roomName;
 
 @end

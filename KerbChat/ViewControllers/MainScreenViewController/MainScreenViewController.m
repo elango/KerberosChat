@@ -18,6 +18,7 @@
 
 @property (weak, nonatomic) IBOutlet UITableView *roomsTableView;
 @property (nonatomic) NSInteger clickedIndex;
+@property (strong, nonatomic) NSString *clickedRoomName;
 
 @end
 
@@ -105,14 +106,10 @@
     }
 }
 
-- (void)sendMessageAboutNewMessage {
-    NSString *jsonToSend = [[ChatHelper helper] jsonForMessageRequestFromUser:[[AuthHelper helper] login] withMessage:@"Hello, Alexey!" andRoom: @"TomChat"];
-  /*  NSData *jsonData = [NSJSONSerialization dataWithJSONObject:jsonToSend
-                                                            options:NSJSONWritingPrettyPrinted
-                                                              error:nil];
-    NSString *jsonString = [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];*/
-    if ([self sendMessage:jsonToSend]) {
-        NSLog(@"Message sent");
+- (void)sendSecretMessageWithRoom:(NSString*) room {
+    NSString *encryptedJson = [[ChatHelper helper] jsonForSecretWithRoom:room];
+    if ([self sendMessage:encryptedJson]) {
+        NSLog(@"Send secret message");
     }
 }
 
@@ -121,7 +118,7 @@
 
 - (void)handlingReceiveMessage:(NSDictionary*) message withType:(NSString*) type {
     if ([type isEqualToString:@"handshake"]) {
-        NSString *service = ((NSArray*)[message valueForKey:@"service"]).firstObject;
+        NSString *service = [message valueForKey:@"service"];
         if (![service isEqualToString:@"chat"]) {
             [self.navigationController popViewControllerAnimated:YES];
         }
@@ -129,19 +126,28 @@
     }
     if ([type isEqualToString:@"online"]) {
         NSLog(@"---- %@ ---- Received JSON with online type : %@",[message valueForKey:@"timestamp"], message);
-        [[KerbChatManager manager] setRooms: [message valueForKey:@"rooms"]];
+        NSMutableDictionary *rooms = [NSMutableDictionary dictionary];
+        for (NSDictionary *room in [message valueForKey:@"rooms"]) {
+            [rooms setValue:room forKey:[room valueForKey:@"name"]];
+        }
+        [[KerbChatManager manager] setRooms:rooms];
         [[KerbChatManager manager] setOnlineUsers:[message valueForKey:@"users_online"]];
         [self.roomsTableView reloadData];
-        [self sendMessageAboutNewMessage];
         return;
     }
-    if ([type isEqualToString:@"new_chat"]) {
+    if ([type isEqualToString:@"new_room"]) {
         NSLog(@"Received JSON with new_chat type : %@",message);
-        [[[KerbChatManager manager] rooms] addObject:[message valueForKey:@"room"]];
-        // TODO : set secret for new room
+        NSString *name = [[message valueForKey:@"room"] valueForKey:@"name"];
+        NSString *secret = [message valueForKey:@"secret"];
+        [[KerbChatManager manager] addSecretToStoreWithKey:name andValue:secret];
         return;
     }
-    
+    if ([type isEqualToString:@"get_secret"]) {
+        NSLog(@"Received JSON with get_secret type : %@",message);
+        NSString *room = [[message valueForKey:@"room"] valueForKey:@"name"];
+        [self sendSecretMessageWithRoom:room];
+        return;
+    }
 }
 
 #pragma mark
@@ -161,27 +167,31 @@
     }
     cell.textLabel.font = [UIFont fontWithName:@"Helvetica-Light" size:18];
     cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-    cell.textLabel.text = [[[[KerbChatManager manager] rooms] objectAtIndex:indexPath.row] valueForKey:@"name"];
-    cell.detailTextLabel.text = [[[[[KerbChatManager manager] rooms] objectAtIndex:indexPath.row] valueForKey:@"users"] componentsJoinedByString:@""];
+    NSString *key = [[[[KerbChatManager manager] rooms] allKeys] objectAtIndex:indexPath.row];
+    NSString *room = [[[KerbChatManager manager] rooms] objectForKey:key];
+    cell.textLabel.text = [room valueForKey:@"name"];
+    cell.detailTextLabel.text = [[room valueForKey:@"users"] componentsJoinedByString:@","];
     return cell;
 }
 
--(void) tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+- (void) tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     self.clickedIndex = indexPath.row;
+    self.clickedRoomName = [tableView cellForRowAtIndexPath:indexPath].textLabel.text;
+    [self performSegueWithIdentifier:@"room" sender:self];
 }
 
--(CGFloat) tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section {
+- (CGFloat) tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section {
     return 1;
 }
 
 #pragma mark
 #pragma mark
 
--(void) prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
+- (void) prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
     if ([[segue identifier] isEqualToString:@"room"])
     {
-        [(ChatViewController*)[segue destinationViewController] setRoomIndex:self.clickedIndex];
+        [(ChatViewController*)[segue destinationViewController] setRoomName:self.clickedRoomName];
         [[KerbChatManager manager] setSocketDelegate:nil];
     }
     else

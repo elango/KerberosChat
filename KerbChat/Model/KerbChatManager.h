@@ -12,7 +12,7 @@
 @interface KerbChatManager : NSObject
 
 @property (nonatomic, strong) NSData *secretKey;
-@property (nonatomic, strong) NSMutableArray *rooms;
+@property (nonatomic, strong) NSMutableDictionary *rooms;
 @property (nonatomic, strong) NSMutableArray *onlineUsers;
 @property (nonatomic, strong) SRWebSocket *socket;
 
@@ -21,6 +21,9 @@
 - (NSString*)loginUrlString;
 - (NSString*)tgsUrlString;
 - (NSString*)chatUrlString;
+
+- (void)addSecretToStoreWithKey:(NSString*)key andValue:(NSString*)value;
+- (NSString*)getSecretForRoom:(NSString*)room;
 
 - (NSString*)getCurrentDataString;
 - (NSString*)encryptJsonFromDictionary:(NSDictionary*) json withKey:(NSData*) key;

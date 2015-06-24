@@ -16,9 +16,19 @@
                                               password:(NSString*)password;
 
 - (NSString*)jsonForMessageRequestFromUser:(NSString*) user
-                                           withMessage:(NSString*) message andRoom:(NSString*) room;
+                               withMessage:(NSString*) message
+                                   andRoom:(NSString*) room;
 
 -(NSDictionary*)decryptedJsonFromServer:(NSString*) message;
 
+- (NSString*) jsonForGoRoomWithName:(NSString*) name;
+
+- (NSString*) jsonForNewRoomWithUsers:(NSMutableArray*) users
+                            threshold:(NSString*) threshold
+                              andName:(NSString*) name;
+
+- (NSString*)jsonForSecretWithRoom:(NSString*) room;
+
+- (void)showAlertToCloseRoom;
 
 @end

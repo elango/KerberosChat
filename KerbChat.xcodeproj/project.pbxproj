@@ -25,6 +25,7 @@
 		E39E7F4A1B108EC200EA1878 /* KerbChatManager.m in Sources */ = {isa = PBXBuildFile; fileRef = E39E7F491B108EC200EA1878 /* KerbChatManager.m */; };
 		E39E7F4C1B12374100EA1878 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E39E7F4B1B12374100EA1878 /* Security.framework */; };
 		E39E7F511B12385000EA1878 /* NSData+AES.m in Sources */ = {isa = PBXBuildFile; fileRef = E39E7F501B12385000EA1878 /* NSData+AES.m */; };
+		E3BC28201B19E68300C6DF5A /* NewRoomViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E3BC281F1B19E68300C6DF5A /* NewRoomViewController.m */; };
 		E3E90F891B1466A80095A808 /* CFNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E3E90F881B1466A80095A808 /* CFNetwork.framework */; };
 /* End PBXBuildFile section */
 
@@ -73,6 +74,8 @@
 		E39E7F4B1B12374100EA1878 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
 		E39E7F4F1B12385000EA1878 /* NSData+AES.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSData+AES.h"; sourceTree = "<group>"; };
 		E39E7F501B12385000EA1878 /* NSData+AES.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSData+AES.m"; sourceTree = "<group>"; };
+		E3BC281E1B19E68300C6DF5A /* NewRoomViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NewRoomViewController.h; path = KerbChat/ViewControllers/NewRoomViewController.h; sourceTree = SOURCE_ROOT; };
+		E3BC281F1B19E68300C6DF5A /* NewRoomViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = NewRoomViewController.m; path = KerbChat/ViewControllers/NewRoomViewController.m; sourceTree = SOURCE_ROOT; };
 		E3E90F881B1466A80095A808 /* CFNetwork.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CFNetwork.framework; path = System/Library/Frameworks/CFNetwork.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
@@ -220,6 +223,7 @@
 		E39E7F451B108E6F00EA1878 /* ViewControllers */ = {
 			isa = PBXGroup;
 			children = (
+				E3BC281D1B19E67400C6DF5A /* NewRoomViewController */,
 				E3001B321B1904690052F5D7 /* ChatViewController */,
 				E354AEB81B13CD41007A6642 /* MainScreenViewController */,
 				E39E7F461B108E7800EA1878 /* Login */,
@@ -264,6 +268,15 @@
 				E39E7F4B1B12374100EA1878 /* Security.framework */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		E3BC281D1B19E67400C6DF5A /* NewRoomViewController */ = {
+			isa = PBXGroup;
+			children = (
+				E3BC281E1B19E68300C6DF5A /* NewRoomViewController.h */,
+				E3BC281F1B19E68300C6DF5A /* NewRoomViewController.m */,
+			);
+			path = NewRoomViewController;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -374,6 +387,7 @@
 				E39E7F4A1B108EC200EA1878 /* KerbChatManager.m in Sources */,
 				E39E7F221B108CCD00EA1878 /* AppDelegate.m in Sources */,
 				E307FE5A1B13F854002862E7 /* TCMessage.m in Sources */,
+				E3BC28201B19E68300C6DF5A /* NewRoomViewController.m in Sources */,
 				E307FE501B13D7E9002862E7 /* SRWebSocket.m in Sources */,
 				E39E7F1F1B108CCD00EA1878 /* main.m in Sources */,
 				E354AEB71B13CCB7007A6642 /* BBAES.m in Sources */,

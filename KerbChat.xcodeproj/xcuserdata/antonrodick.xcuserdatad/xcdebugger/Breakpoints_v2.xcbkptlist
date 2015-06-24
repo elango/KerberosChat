@@ -19,13 +19,13 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "KerbChat/ViewControllers/ChatViewController/ChatViewController.m"
-            timestampString = "454637603.489856"
+            filePath = "KerbChat/ViewControllers/NewRoomViewController.m"
+            timestampString = "456836518.009004"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "57"
-            endingLineNumber = "57"
-            landmarkName = "-webSocket:didCloseWithCode:reason:wasClean:"
+            startingLineNumber = "145"
+            endingLineNumber = "145"
+            landmarkName = "-createRoom:"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -36,12 +36,12 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "KerbChat/ViewControllers/MainScreenViewController/MainScreenViewController.m"
-            timestampString = "454669105.522147"
+            timestampString = "456835504.596672"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "82"
-            endingLineNumber = "82"
-            landmarkName = "-webSocket:didCloseWithCode:reason:wasClean:"
+            startingLineNumber = "110"
+            endingLineNumber = "110"
+            landmarkName = "-sendSecretMessageWithRoom:"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -52,28 +52,28 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "KerbChat/ViewControllers/MainScreenViewController/MainScreenViewController.m"
-            timestampString = "454669105.522147"
+            timestampString = "456836518.009004"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "69"
-            endingLineNumber = "69"
-            landmarkName = "-webSocket:didFailWithError:"
+            startingLineNumber = "146"
+            endingLineNumber = "146"
+            landmarkName = "-handlingReceiveMessage:withType:"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            shouldBeEnabled = "No"
+            shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "KerbChat/ViewControllers/ChatViewController/ChatViewController.m"
-            timestampString = "454637603.489856"
+            filePath = "KerbChat/Helpers/ChatHelper/ChatHelper.m"
+            timestampString = "456837696.72649"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "70"
-            endingLineNumber = "70"
-            landmarkName = "-sendGoRoomMessageWithNumber:"
+            startingLineNumber = "117"
+            endingLineNumber = "117"
+            landmarkName = "-jsonForSecretWithRoom:"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
